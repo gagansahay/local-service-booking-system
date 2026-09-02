@@ -142,13 +142,13 @@ include __DIR__ . '/../includes/header.php';
 
     <section class="card">
         <div class="card__body">
-            <div class="person" style="margin-bottom:var(--sp-4)">
+            <div class="person u-mb-4">
                 <span class="avatar avatar--lg" aria-hidden="true"><?= e(initials($booking['provider_name'])) ?></span>
                 <div>
                     <div class="person__name"><?= e($booking['provider_name']) ?></div>
                     <div class="person__meta"><?= e($booking['category_name']) ?></div>
                 </div>
-                <span class="ref" style="margin-left:auto"><?= e($booking['booking_code']) ?></span>
+                <span class="ref u-ml-auto"><?= e($booking['booking_code']) ?></span>
             </div>
 
             <dl class="jobcard__facts">

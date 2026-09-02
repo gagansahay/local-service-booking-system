@@ -127,7 +127,7 @@ include __DIR__ . '/../includes/header.php';
 <?php endif; ?>
 
 <!-- ==================== COUNTERS ================================= -->
-<div class="grid grid--4" style="margin-bottom:var(--sp-6)">
+<div class="grid grid--4 u-mb-6">
     <div class="stat stat--accent">
         <div class="stat__label">New requests</div>
         <div class="stat__value"><?= (int) $stats['pending'] ?></div>
@@ -145,7 +145,7 @@ include __DIR__ . '/../includes/header.php';
     </div>
     <div class="stat">
         <div class="stat__label">Earned this month</div>
-        <div class="stat__value" style="font-size:var(--text-xl)"><?= e(money($stats['earned_month'])) ?></div>
+        <div class="stat__value stat__value--sm"><?= e(money($stats['earned_month'])) ?></div>
         <div class="stat__meta"><?= e(money($stats['earned'])) ?> lifetime</div>
     </div>
 </div>
@@ -161,7 +161,7 @@ include __DIR__ . '/../includes/header.php';
             </div>
             <div class="card__body<?= $today ? ' card__body--flush' : '' ?>">
                 <?php if (!$today): ?>
-                    <div class="empty" style="padding:var(--sp-8) 0">
+                    <div class="empty u-pad-y-8">
                         <div class="empty__icon" aria-hidden="true">&#9200;</div>
                         <h3>Nothing scheduled today</h3>
                         <p>Accepted jobs for today will appear here with the customer's address and number.</p>
@@ -205,7 +205,7 @@ include __DIR__ . '/../includes/header.php';
             </div>
             <div class="card__body">
                 <?php if (!$requests): ?>
-                    <div class="empty" style="padding:var(--sp-8) 0">
+                    <div class="empty u-pad-y-8">
                         <div class="empty__icon" aria-hidden="true">&#9993;</div>
                         <h3>No new requests</h3>
                         <p>When a customer books you, their request appears here for you to accept or decline.</p>
@@ -215,7 +215,7 @@ include __DIR__ . '/../includes/header.php';
                         <div style="padding:var(--sp-3) 0;border-bottom:1px solid var(--line-soft)">
                             <div style="display:flex;justify-content:space-between;gap:var(--sp-3)">
                                 <div>
-                                    <strong style="color:var(--ink-900)"><?= e($r['customer_name']) ?></strong>
+                                    <strong class="u-ink"><?= e($r['customer_name']) ?></strong>
                                     <div class="text-small text-muted">
                                         <?= e($r['service_name'] ?: 'General visit') ?> &middot;
                                         <?= e(show_date($r['booking_date'])) ?> at <?= e(show_time($r['booking_time'])) ?>
@@ -223,7 +223,7 @@ include __DIR__ . '/../includes/header.php';
                                 </div>
                                 <span class="ref"><?= e($r['booking_code']) ?></span>
                             </div>
-                            <div class="btn-row" style="margin-top:var(--sp-2)">
+                            <div class="btn-row u-mt-2">
                                 <a class="btn btn--accent btn--sm" href="requests.php#b<?= (int) $r['booking_id'] ?>">Review</a>
                             </div>
                         </div>
@@ -249,7 +249,7 @@ include __DIR__ . '/../includes/header.php';
                     <div><dt>Hourly rate</dt><dd><?= e(money($profile['hourly_rate'])) ?></dd></div>
                     <div><dt>Status</dt><dd><?= status_badge($profile['verification_status']) ?></dd></div>
                 </dl>
-                <a class="btn btn--outline btn--block" style="margin-top:var(--sp-4)" href="profile.php">Edit my profile</a>
+                <a class="btn btn--outline btn--block u-mt-4" href="profile.php">Edit my profile</a>
             </div>
         </section>
 
@@ -264,7 +264,7 @@ include __DIR__ . '/../includes/header.php';
                 <?php foreach ($amcVisits as $v): ?>
                     <div style="display:flex;justify-content:space-between;gap:var(--sp-3);padding:var(--sp-3) 0;border-bottom:1px solid var(--line-soft)">
                         <div>
-                            <strong style="color:var(--ink-900)"><?= e($v['customer_name']) ?></strong>
+                            <strong class="u-ink"><?= e($v['customer_name']) ?></strong>
                             <div class="text-small text-muted">
                                 <?= e($v['plan_name']) ?> · visit <?= (int) $v['visit_number'] ?>
                             </div>
@@ -287,7 +287,7 @@ include __DIR__ . '/../includes/header.php';
                 <?php foreach ($reviews as $r): ?>
                     <div style="padding:var(--sp-3) 0;border-bottom:1px solid var(--line-soft)">
                         <div style="display:flex;justify-content:space-between;gap:var(--sp-3)">
-                            <strong style="color:var(--ink-900)"><?= e($r['full_name']) ?></strong>
+                            <strong class="u-ink"><?= e($r['full_name']) ?></strong>
                             <?= star_rating((float) $r['rating']) ?>
                         </div>
                         <?php if (!empty($r['comments'])): ?>

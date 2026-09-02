@@ -114,11 +114,11 @@ $pageActions = '';
 include __DIR__ . '/../includes/header.php';
 ?>
 
-<p style="margin-bottom:var(--sp-4)">
+<p class="u-mb-4">
     <a class="btn btn--ghost btn--sm" href="search.php">&larr; Back to search</a>
 </p>
 
-<div class="grid grid--2" style="align-items:start;grid-template-columns:1.6fr 1fr">
+<div class="grid grid--2 grid--rail">
 
     <!-- ================= LEFT: profile ============================= -->
     <div>
@@ -128,18 +128,18 @@ include __DIR__ . '/../includes/header.php';
                     <span class="avatar avatar--lg" aria-hidden="true"><?= e(initials($provider['full_name'])) ?></span>
                     <div class="contract-head__plan">
                         <h1 style="font-size:var(--text-xl);margin-bottom:2px"><?= e($provider['full_name']) ?></h1>
-                        <p class="provider-card__cat" style="margin:0"><?= e($provider['category_name']) ?></p>
-                        <div style="margin-top:var(--sp-2)">
+                        <p class="provider-card__cat u-m0"><?= e($provider['category_name']) ?></p>
+                        <div class="u-mt-2">
                             <?= star_rating((float) $provider['avg_rating'], (int) $provider['total_reviews']) ?>
                         </div>
                     </div>
                     <div class="text-right">
                         <div class="provider-card__rate"><?= e(money($provider['hourly_rate'])) ?><small>/hr</small></div>
-                        <span class="badge badge--verified" style="margin-top:var(--sp-2)">Verified</span>
+                        <span class="badge badge--verified u-mt-2">Verified</span>
                     </div>
                 </div>
 
-                <dl class="jobcard__facts" style="margin-top:var(--sp-5)">
+                <dl class="jobcard__facts u-mt-5">
                     <div><dt>Experience</dt><dd><?= (int) $provider['experience_years'] ?> years</dd></div>
                     <div><dt>Jobs completed</dt><dd><?= (int) $provider['total_jobs'] ?></dd></div>
                     <div><dt>Based in</dt><dd><?= e($provider['city'] ?: 'Not stated') ?></dd></div>
@@ -147,12 +147,12 @@ include __DIR__ . '/../includes/header.php';
                 </dl>
 
                 <?php if (!empty($provider['bio'])): ?>
-                    <h3 style="margin-top:var(--sp-5)">About</h3>
-                    <p style="margin:0"><?= e($provider['bio']) ?></p>
+                    <h3 class="u-mt-5">About</h3>
+                    <p class="u-m0"><?= e($provider['bio']) ?></p>
                 <?php endif; ?>
 
                 <?php if (!empty($provider['skills'])): ?>
-                    <h3 style="margin-top:var(--sp-5)">Skills</h3>
+                    <h3 class="u-mt-5">Skills</h3>
                     <div class="btn-row">
                         <?php foreach (array_filter(array_map('trim', explode(',', $provider['skills']))) as $skill): ?>
                             <span class="badge badge--scheduled"><?= e($skill) ?></span>
@@ -209,7 +209,7 @@ include __DIR__ . '/../includes/header.php';
             </div>
             <div class="card__body">
                 <?php if (!$reviews): ?>
-                    <div class="empty" style="padding:var(--sp-8) 0">
+                    <div class="empty u-pad-y-8">
                         <div class="empty__icon" aria-hidden="true">&#9734;</div>
                         <h3>No reviews yet</h3>
                         <p>This professional has not been rated. Reviews can only be left after a job is marked complete.</p>
@@ -218,7 +218,7 @@ include __DIR__ . '/../includes/header.php';
 
                     <!-- Rating distribution. Bars are sized from the real
                          counts, so this is data, not decoration. -->
-                    <div style="margin-bottom:var(--sp-6)">
+                    <div class="u-mb-6">
                         <?php for ($star = 5; $star >= 1; $star--): ?>
                             <?php $pct = $totalReviews > 0 ? round($distribution[$star] / $totalReviews * 100) : 0; ?>
                             <div style="display:flex;align-items:center;gap:var(--sp-3);margin-bottom:6px">
@@ -233,7 +233,7 @@ include __DIR__ . '/../includes/header.php';
 
                     <?php foreach ($reviews as $r): ?>
                         <div style="padding:var(--sp-4) 0;border-top:1px solid var(--line-soft)">
-                            <div class="person" style="margin-bottom:var(--sp-2)">
+                            <div class="person u-mb-2">
                                 <span class="avatar avatar--sm" aria-hidden="true"><?= e(initials($r['full_name'])) ?></span>
                                 <div>
                                     <div class="person__name"><?= e($r['full_name']) ?></div>
@@ -241,10 +241,10 @@ include __DIR__ . '/../includes/header.php';
                                         <?= e($r['category_name']) ?> &middot; <?= e(show_date($r['booking_date'])) ?>
                                     </div>
                                 </div>
-                                <div style="margin-left:auto"><?= star_rating((float) $r['rating']) ?></div>
+                                <div class="u-ml-auto"><?= star_rating((float) $r['rating']) ?></div>
                             </div>
                             <?php if (!empty($r['comments'])): ?>
-                                <p style="margin:0"><?= e($r['comments']) ?></p>
+                                <p class="u-m0"><?= e($r['comments']) ?></p>
                             <?php endif; ?>
                         </div>
                     <?php endforeach; ?>
@@ -306,14 +306,14 @@ include __DIR__ . '/../includes/header.php';
                 <?php foreach ($plans as $plan): ?>
                     <div style="padding:var(--sp-3) 0;border-top:1px solid var(--line-soft)">
                         <div style="display:flex;justify-content:space-between;gap:var(--sp-3);align-items:baseline">
-                            <strong style="color:var(--ink-900)"><?= e($plan['plan_name']) ?></strong>
+                            <strong class="u-ink"><?= e($plan['plan_name']) ?></strong>
                             <span class="table__primary"><?= e(money($plan['price'])) ?></span>
                         </div>
                         <div class="text-small text-muted">
                             <?= e(frequency_label($plan['frequency'])) ?> &middot;
                             <?= (int) $plan['visits_per_year'] ?> visits a year
                         </div>
-                        <a class="btn btn--outline btn--sm" style="margin-top:var(--sp-2)"
+                        <a class="btn btn--outline btn--sm u-mt-2"
                            href="maintenance.php?subscribe=<?= (int) $plan['plan_id'] ?>&amp;provider=<?= (int) $providerId ?>">
                             Subscribe
                         </a>

@@ -89,14 +89,14 @@ include __DIR__ . '/../includes/header.php';
                     <div><dt>Contact</dt><dd class="ref"><?= e($r['customer_phone']) ?></dd></div>
                 </dl>
 
-                <p class="text-small" style="margin:0 0 var(--sp-3)">
+                <p class="text-small u-m0 u-mb-3">
                     <strong>Address:</strong> <?= e($r['service_address']) ?>
                     <?= $r['city'] ? ', ' . e($r['city']) : '' ?>
                     <?= $r['pincode'] ? ' &ndash; ' . e($r['pincode']) : '' ?>
                 </p>
 
                 <?php if (!empty($r['problem_description'])): ?>
-                    <p class="text-small" style="margin:0 0 var(--sp-4)">
+                    <p class="text-small u-m0 u-mb-4">
                         <strong>Problem described:</strong> <?= e($r['problem_description']) ?>
                     </p>
                 <?php endif; ?>

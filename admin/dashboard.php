@@ -108,7 +108,7 @@ include __DIR__ . '/../includes/header.php';
 <?php endif; ?>
 
 <!-- ==================== COUNTERS ================================= -->
-<div class="grid grid--4" style="margin-bottom:var(--sp-5)">
+<div class="grid grid--4 u-mb-5">
     <div class="stat stat--blue">
         <div class="stat__label">Customers</div>
         <div class="stat__value"><?= (int) $stats['customers'] ?></div>
@@ -126,12 +126,12 @@ include __DIR__ . '/../includes/header.php';
     </div>
     <div class="stat">
         <div class="stat__label">Revenue</div>
-        <div class="stat__value" style="font-size:var(--text-xl)"><?= e(money($stats['revenue'])) ?></div>
+        <div class="stat__value stat__value--sm"><?= e(money($stats['revenue'])) ?></div>
         <div class="stat__meta">Across completed jobs</div>
     </div>
 </div>
 
-<div class="grid grid--4" style="margin-bottom:var(--sp-6)">
+<div class="grid grid--4 u-mb-6">
     <div class="stat">
         <div class="stat__label">Awaiting action</div>
         <div class="stat__value"><?= (int) $stats['pending_bookings'] ?></div>
@@ -165,7 +165,7 @@ include __DIR__ . '/../includes/header.php';
             </div>
             <div class="card__body<?= $pendingProviders ? ' card__body--flush' : '' ?>">
                 <?php if (!$pendingProviders): ?>
-                    <div class="empty" style="padding:var(--sp-8) 0">
+                    <div class="empty u-pad-y-8">
                         <div class="empty__icon" aria-hidden="true">&#10004;</div>
                         <h3>Nothing waiting</h3>
                         <p>Every registered professional has been reviewed.</p>
@@ -247,7 +247,7 @@ include __DIR__ . '/../includes/header.php';
             <div class="card__body">
                 <?php foreach ($categoryPerformance as $c): ?>
                     <?php $pct = $peakBookings > 0 ? round((int) $c['total_bookings'] / $peakBookings * 100) : 0; ?>
-                    <div style="margin-bottom:var(--sp-4)">
+                    <div class="u-mb-4">
                         <div style="display:flex;justify-content:space-between;font-size:var(--text-sm);margin-bottom:4px">
                             <span class="table__primary"><?= e($c['category_name']) ?></span>
                             <span class="text-muted">

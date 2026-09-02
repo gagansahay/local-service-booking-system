@@ -229,18 +229,18 @@ include __DIR__ . '/../includes/header.php';
                     <span class="avatar avatar--lg" aria-hidden="true"><?= e(initials($p['full_name'])) ?></span>
                     <div class="contract-head__plan">
                         <h3 style="margin-bottom:2px"><?= e($p['full_name']) ?></h3>
-                        <p class="text-small text-muted" style="margin:0">
+                        <p class="text-small text-muted u-m0">
                             <?= e($p['category_name']) ?> &middot; <?= e($p['email']) ?>
                             &middot; <span class="ref"><?= e($p['phone']) ?></span>
                         </p>
-                        <div style="margin-top:var(--sp-2)">
+                        <div class="u-mt-2">
                             <?= star_rating((float) $p['avg_rating'], (int) $p['total_reviews']) ?>
                         </div>
                     </div>
                     <div class="text-right">
                         <?= status_badge($p['verification_status']) ?>
                         <?php if ($p['account_status'] === 'suspended'): ?>
-                            <div style="margin-top:var(--sp-1)"><?= status_badge('suspended') ?></div>
+                            <div class="u-mt-1"><?= status_badge('suspended') ?></div>
                         <?php endif; ?>
                     </div>
                 </div>
@@ -269,7 +269,7 @@ include __DIR__ . '/../includes/header.php';
                     </p>
                 <?php endif; ?>
                 <?php if (!empty($p['bio'])): ?>
-                    <p class="text-small text-muted" style="margin:0 0 var(--sp-3)"><?= e($p['bio']) ?></p>
+                    <p class="text-small text-muted u-m0 u-mb-3"><?= e($p['bio']) ?></p>
                 <?php endif; ?>
 
                 <!-- Decisions ---------------------------------------- -->
@@ -280,9 +280,9 @@ include __DIR__ . '/../includes/header.php';
                         </span>
                     <?php endif; ?>
 
-                    <div class="btn-row" style="margin-left:auto">
+                    <div class="btn-row u-ml-auto">
                         <?php if ($p['verification_status'] !== 'verified'): ?>
-                            <form method="post" action="providers.php?status=<?= e($filter) ?>" style="display:inline">
+                            <form method="post" action="providers.php?status=<?= e($filter) ?>" class="u-inline">
                                 <?= csrf_field() ?>
                                 <input type="hidden" name="action" value="set_verification">
                                 <input type="hidden" name="provider_id" value="<?= (int) $p['provider_id'] ?>">
@@ -295,7 +295,7 @@ include __DIR__ . '/../includes/header.php';
                         <?php endif; ?>
 
                         <?php if ($p['verification_status'] !== 'rejected'): ?>
-                            <form method="post" action="providers.php?status=<?= e($filter) ?>" style="display:inline">
+                            <form method="post" action="providers.php?status=<?= e($filter) ?>" class="u-inline">
                                 <?= csrf_field() ?>
                                 <input type="hidden" name="action" value="set_verification">
                                 <input type="hidden" name="provider_id" value="<?= (int) $p['provider_id'] ?>">
@@ -307,7 +307,7 @@ include __DIR__ . '/../includes/header.php';
                             </form>
                         <?php endif; ?>
 
-                        <form method="post" action="providers.php?status=<?= e($filter) ?>" style="display:inline">
+                        <form method="post" action="providers.php?status=<?= e($filter) ?>" class="u-inline">
                             <?= csrf_field() ?>
                             <input type="hidden" name="action" value="toggle_account">
                             <input type="hidden" name="user_id" value="<?= (int) $p['user_id'] ?>">

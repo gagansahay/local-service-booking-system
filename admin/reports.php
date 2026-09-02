@@ -232,14 +232,14 @@ include __DIR__ . '/../includes/header.php';
 </form>
 
 <!-- ==================== HEADLINE ================================= -->
-<div class="grid grid--4" style="margin-bottom:var(--sp-6)">
+<div class="grid grid--4 u-mb-6">
     <div class="stat stat--blue">
         <div class="stat__label">Bookings in period</div>
         <div class="stat__value"><?= $totalBookings ?></div>
     </div>
     <div class="stat stat--success">
         <div class="stat__label">Value in period</div>
-        <div class="stat__value" style="font-size:var(--text-xl)"><?= e(money($totalValue)) ?></div>
+        <div class="stat__value stat__value--sm"><?= e(money($totalValue)) ?></div>
     </div>
     <div class="stat stat--accent">
         <div class="stat__label">Trades active</div>
@@ -378,7 +378,7 @@ include __DIR__ . '/../includes/header.php';
         <?php else: ?>
             <?php foreach ($monthly as $m): ?>
                 <?php $pct = $peakRevenue > 0 ? round((float) $m['revenue'] / $peakRevenue * 100) : 0; ?>
-                <div style="margin-bottom:var(--sp-4)">
+                <div class="u-mb-4">
                     <div style="display:flex;justify-content:space-between;font-size:var(--text-sm);margin-bottom:4px">
                         <span class="table__primary"><?= e($m['label']) ?></span>
                         <span>
@@ -433,7 +433,7 @@ include __DIR__ . '/../includes/header.php';
     </div>
 </section>
 
-<p class="text-small text-muted text-center" style="margin-top:var(--sp-6)">
+<p class="text-small text-muted text-center u-mt-6">
     Generated <?= e(date(DATETIME_FORMAT)) ?> by <?= e(current_name()) ?>
     &middot; <?= e(APP_NAME) ?> &middot; <?= e(COURSE_CODE) ?>
 </p>

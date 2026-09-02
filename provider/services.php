@@ -160,7 +160,7 @@ $pageLede    = 'Publish what you do and what it costs, so customers can book the
 include __DIR__ . '/../includes/header.php';
 ?>
 
-<div class="grid grid--2" style="align-items:start;grid-template-columns:1.4fr 1fr">
+<div class="grid grid--2 grid--rail-wide">
 
     <!-- ---------------- Listing ---------------------------------- -->
     <div>
@@ -183,7 +183,7 @@ include __DIR__ . '/../includes/header.php';
                         <div class="jobcard__top">
                             <div>
                                 <h3 style="margin-bottom:2px"><?= e($s['service_name']) ?></h3>
-                                <p class="text-small text-muted" style="margin:0">
+                                <p class="text-small text-muted u-m0">
                                     <?= e(excerpt($s['description'], 90)) ?>
                                 </p>
                             </div>
@@ -199,11 +199,11 @@ include __DIR__ . '/../includes/header.php';
                         </dl>
 
                         <div class="jobcard__foot">
-                            <div class="btn-row" style="margin-left:auto">
+                            <div class="btn-row u-ml-auto">
                                 <a class="btn btn--outline btn--sm"
                                    href="services.php?edit=<?= (int) $s['service_id'] ?>">Edit</a>
 
-                                <form method="post" action="services.php" style="display:inline">
+                                <form method="post" action="services.php" class="u-inline">
                                     <?= csrf_field() ?>
                                     <input type="hidden" name="action" value="toggle">
                                     <input type="hidden" name="service_id" value="<?= (int) $s['service_id'] ?>">
@@ -213,7 +213,7 @@ include __DIR__ . '/../includes/header.php';
                                 </form>
 
                                 <?php if ((int) $s['booking_count'] === 0): ?>
-                                    <form method="post" action="services.php" style="display:inline">
+                                    <form method="post" action="services.php" class="u-inline">
                                         <?= csrf_field() ?>
                                         <input type="hidden" name="action" value="delete">
                                         <input type="hidden" name="service_id" value="<?= (int) $s['service_id'] ?>">

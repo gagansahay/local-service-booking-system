@@ -205,7 +205,7 @@ include __DIR__ . '/../includes/header.php';
 ?>
 
 <!-- ==================== STATUS TABS ============================== -->
-<div class="btn-row" style="margin-bottom:var(--sp-5)">
+<div class="btn-row u-mb-5">
     <?php foreach ($tabs as $key => $label): ?>
         <?php
         $n = $key === 'cancelled'
@@ -277,13 +277,13 @@ include __DIR__ . '/../includes/header.php';
                 </dl>
 
                 <?php if (!empty($b['problem_description'])): ?>
-                    <p class="text-small" style="margin:0 0 var(--sp-3)">
+                    <p class="text-small u-m0 u-mb-3">
                         <strong>You wrote:</strong> <?= e($b['problem_description']) ?>
                     </p>
                 <?php endif; ?>
 
                 <?php if (!empty($b['cancellation_reason'])): ?>
-                    <div class="alert alert--warning" style="margin-bottom:var(--sp-3)">
+                    <div class="alert alert--warning u-mb-3">
                         <span class="alert__icon">&#9888;</span>
                         <span class="alert__text"><?= e($b['cancellation_reason']) ?></span>
                     </div>
@@ -291,12 +291,12 @@ include __DIR__ . '/../includes/header.php';
 
                 <!-- Audit trail ------------------------------------- -->
                 <?php if (!empty($history[(int) $b['booking_id']])): ?>
-                    <details style="margin-bottom:var(--sp-3)">
+                    <details class="u-mb-3">
                         <summary class="text-small" style="cursor:pointer;color:var(--blue-600)">
                             Show status history
                             (<?= count($history[(int) $b['booking_id']]) ?> updates)
                         </summary>
-                        <div class="table-wrap" style="margin-top:var(--sp-3)">
+                        <div class="table-wrap u-mt-3">
                             <table class="table">
                                 <thead>
                                     <tr><th>When</th><th>Change</th><th>By</th><th>Remarks</th></tr>
@@ -338,7 +338,7 @@ include __DIR__ . '/../includes/header.php';
                         <?php endif; ?>
 
                         <?php if ($canCancel): ?>
-                            <form method="post" action="my-bookings.php" style="display:inline">
+                            <form method="post" action="my-bookings.php" class="u-inline">
                                 <?= csrf_field() ?>
                                 <input type="hidden" name="action" value="cancel">
                                 <input type="hidden" name="booking_id" value="<?= (int) $b['booking_id'] ?>">

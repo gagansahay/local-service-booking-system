@@ -167,7 +167,7 @@ include __DIR__ . '/../includes/header.php';
     </div>
 </form>
 
-<div class="btn-row" style="margin-bottom:var(--sp-5)">
+<div class="btn-row u-mb-5">
     <?php foreach ($tabs as $key => $label): ?>
         <a class="btn <?= $filter === $key ? 'btn--primary' : 'btn--outline' ?> btn--sm"
            href="bookings.php?status=<?= e($key) ?>">
@@ -257,7 +257,7 @@ include __DIR__ . '/../includes/header.php';
                                             </select>
 
                                             <?php if (in_array('completed', $allowed, true)): ?>
-                                                <label class="label" style="margin-top:var(--sp-2)"
+                                                <label class="label u-mt-2"
                                                        for="fc<?= (int) $b['booking_id'] ?>">
                                                     Final amount (if completing)
                                                 </label>
@@ -266,14 +266,13 @@ include __DIR__ . '/../includes/header.php';
                                                        value="<?= e(number_format((float) $b['estimated_cost'], 2, '.', '')) ?>">
                                             <?php endif; ?>
 
-                                            <label class="label" style="margin-top:var(--sp-2)"
+                                            <label class="label u-mt-2"
                                                    for="rm<?= (int) $b['booking_id'] ?>">Reason</label>
                                             <input class="input" type="text" name="remarks"
                                                    id="rm<?= (int) $b['booking_id'] ?>"
                                                    placeholder="Administrative override">
 
-                                            <button class="btn btn--accent btn--sm btn--block"
-                                                    style="margin-top:var(--sp-3)" type="submit"
+                                            <button class="btn btn--accent btn--sm btn--block u-mt-3" type="submit"
                                                     data-confirm="Override the status of <?= e($b['booking_code']) ?>?">
                                                 Apply override
                                             </button>

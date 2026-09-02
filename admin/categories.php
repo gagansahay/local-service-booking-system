@@ -165,7 +165,7 @@ $pageLede    = 'The trades customers can search. Every professional belongs to e
 include __DIR__ . '/../includes/header.php';
 ?>
 
-<div class="grid grid--2" style="align-items:start;grid-template-columns:1.6fr 1fr">
+<div class="grid grid--2 grid--rail">
 
     <!-- ---------------- Listing ---------------------------------- -->
     <section class="card">
@@ -211,7 +211,7 @@ include __DIR__ . '/../includes/header.php';
                                     <a class="btn btn--outline btn--sm"
                                        href="categories.php?edit=<?= (int) $c['category_id'] ?>">Edit</a>
 
-                                    <form method="post" action="categories.php" style="display:inline">
+                                    <form method="post" action="categories.php" class="u-inline">
                                         <?= csrf_field() ?>
                                         <input type="hidden" name="action" value="toggle">
                                         <input type="hidden" name="category_id" value="<?= (int) $c['category_id'] ?>">
@@ -226,7 +226,7 @@ include __DIR__ . '/../includes/header.php';
                                            && (int) $c['plan_count']     === 0;
                                     ?>
                                     <?php if ($unused): ?>
-                                        <form method="post" action="categories.php" style="display:inline">
+                                        <form method="post" action="categories.php" class="u-inline">
                                             <?= csrf_field() ?>
                                             <input type="hidden" name="action" value="delete">
                                             <input type="hidden" name="category_id" value="<?= (int) $c['category_id'] ?>">

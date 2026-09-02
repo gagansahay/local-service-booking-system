@@ -139,7 +139,7 @@ $pageTitle = 'Sign in';
                 <button class="btn btn--accent btn--block btn--lg" type="submit">Sign in</button>
             </form>
 
-            <p class="text-small text-center" style="margin-top:var(--sp-5)">
+            <p class="text-small text-center u-mt-5">
                 New here? <a href="register.php">Create an account</a>
             </p>
 
@@ -148,7 +148,7 @@ $pageTitle = 'Sign in';
                  It would be deleted before any real deployment. -->
             <div class="demo-keys">
                 <h4>Demonstration accounts</h4>
-                <p class="text-small text-muted" style="margin-bottom:var(--sp-3)">
+                <p class="text-small text-muted u-mb-3">
                     Seeded by <code>lsbms_seed.sql</code>. Click a row to fill the form.
                 </p>
                 <table>

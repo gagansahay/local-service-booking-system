@@ -98,25 +98,25 @@ $pageLede    = 'What you have billed, what has been settled, and what is still o
 include __DIR__ . '/../includes/header.php';
 ?>
 
-<div class="grid grid--4" style="margin-bottom:var(--sp-6)">
+<div class="grid grid--4 u-mb-6">
     <div class="stat stat--success">
         <div class="stat__label">Earned this month</div>
-        <div class="stat__value" style="font-size:var(--text-xl)"><?= e(money($totals['this_month'])) ?></div>
+        <div class="stat__value stat__value--sm"><?= e(money($totals['this_month'])) ?></div>
         <div class="stat__meta"><?= e(date('F Y')) ?></div>
     </div>
     <div class="stat stat--blue">
         <div class="stat__label">Lifetime</div>
-        <div class="stat__value" style="font-size:var(--text-xl)"><?= e(money($totals['lifetime'])) ?></div>
+        <div class="stat__value stat__value--sm"><?= e(money($totals['lifetime'])) ?></div>
         <div class="stat__meta"><?= (int) $totals['jobs'] ?> completed jobs</div>
     </div>
     <div class="stat stat--accent">
         <div class="stat__label">Awaiting payment</div>
-        <div class="stat__value" style="font-size:var(--text-xl)"><?= e(money($totals['outstanding'])) ?></div>
+        <div class="stat__value stat__value--sm"><?= e(money($totals['outstanding'])) ?></div>
         <div class="stat__meta">Completed but unsettled</div>
     </div>
     <div class="stat">
         <div class="stat__label">Average per job</div>
-        <div class="stat__value" style="font-size:var(--text-xl)"><?= e(money($averageJob)) ?></div>
+        <div class="stat__value stat__value--sm"><?= e(money($averageJob)) ?></div>
         <div class="stat__meta">Across all completed work</div>
     </div>
 </div>
@@ -128,7 +128,7 @@ include __DIR__ . '/../includes/header.php';
         <div class="card__head"><h3>Last twelve months</h3></div>
         <div class="card__body">
             <?php if (!$monthly): ?>
-                <div class="empty" style="padding:var(--sp-8) 0">
+                <div class="empty u-pad-y-8">
                     <div class="empty__icon" aria-hidden="true">&#8377;</div>
                     <h3>No completed jobs yet</h3>
                     <p>Once you complete a job, your earnings will be charted here month by month.</p>
@@ -136,7 +136,7 @@ include __DIR__ . '/../includes/header.php';
             <?php else: ?>
                 <?php foreach ($monthly as $m): ?>
                     <?php $pct = $peakRevenue > 0 ? round((float) $m['revenue'] / $peakRevenue * 100) : 0; ?>
-                    <div style="margin-bottom:var(--sp-4)">
+                    <div class="u-mb-4">
                         <div style="display:flex;justify-content:space-between;font-size:var(--text-sm);margin-bottom:4px">
                             <span class="table__primary"><?= e($m['label']) ?></span>
                             <span>
@@ -161,7 +161,7 @@ include __DIR__ . '/../includes/header.php';
         <div class="card__head"><h3>Where the money comes from</h3></div>
         <div class="card__body card__body--flush">
             <?php if (!$byService): ?>
-                <div class="empty" style="padding:var(--sp-8) 0">
+                <div class="empty u-pad-y-8">
                     <div class="empty__icon" aria-hidden="true">&#9635;</div>
                     <h3>Nothing to break down yet</h3>
                     <p>This will show which of your services earn the most once jobs are completed.</p>
@@ -197,7 +197,7 @@ include __DIR__ . '/../includes/header.php';
     </div>
     <div class="card__body card__body--flush">
         <?php if (!$invoices): ?>
-            <div class="empty" style="padding:var(--sp-10) 0">
+            <div class="empty u-pad-y-10">
                 <div class="empty__icon" aria-hidden="true">&#128179;</div>
                 <h3>No invoices yet</h3>
                 <p>An invoice appears here for every job you mark complete.</p>

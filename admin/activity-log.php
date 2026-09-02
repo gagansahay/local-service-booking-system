@@ -148,7 +148,7 @@ include __DIR__ . '/../includes/header.php';
 ?>
 
 <!-- ==================== SECURITY COUNTERS ======================== -->
-<div class="grid grid--4" style="margin-bottom:var(--sp-6)">
+<div class="grid grid--4 u-mb-6">
     <div class="stat <?= (int) $security['failed_24h'] > 0 ? 'stat--danger' : '' ?>">
         <div class="stat__label">Failed sign-ins (24h)</div>
         <div class="stat__value"><?= (int) $security['failed_24h'] ?></div>
@@ -227,7 +227,7 @@ include __DIR__ . '/../includes/header.php';
     </div>
 </form>
 
-<div class="btn-row" style="margin-bottom:var(--sp-5)">
+<div class="btn-row u-mb-5">
     <?php foreach ($groups as $key => [$label, $_]): ?>
         <a class="btn <?= $filter === $key ? 'btn--primary' : 'btn--outline' ?> btn--sm"
            href="activity-log.php?type=<?= e($key) ?>"><?= e($label) ?></a>

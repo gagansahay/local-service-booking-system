@@ -327,7 +327,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </fieldset>
 
                 <!-- Password --------------------------------------------->
-                <div class="form-grid" style="margin-top:var(--sp-4)">
+                <div class="form-grid u-mt-4">
                     <div class="field">
                         <label class="label" for="password">Password <span class="req">*</span></label>
                         <input class="input<?= isset($errors['password']) ? ' is-invalid' : '' ?>"
@@ -351,12 +351,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                 </div>
 
-                <button class="btn btn--accent btn--block btn--lg" type="submit" style="margin-top:var(--sp-4)">
+                <button class="btn btn--accent btn--block btn--lg" type="submit" class="u-mt-4">
                     Create my account
                 </button>
             </form>
 
-            <p class="text-small text-center" style="margin-top:var(--sp-5)">
+            <p class="text-small text-center u-mt-5">
                 Already registered? <a href="login.php">Sign in</a>
             </p>
         </div>

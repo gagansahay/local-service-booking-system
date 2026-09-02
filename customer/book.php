@@ -227,7 +227,7 @@ $pageLede    = $provider['category_name'] . ' · ' . money($provider['hourly_rat
 include __DIR__ . '/../includes/header.php';
 ?>
 
-<p style="margin-bottom:var(--sp-4)">
+<p class="u-mb-4">
     <a class="btn btn--ghost btn--sm" href="provider-view.php?id=<?= (int) $providerId ?>">&larr; Back to profile</a>
 </p>
 
@@ -238,7 +238,7 @@ include __DIR__ . '/../includes/header.php';
     </div>
 <?php endif; ?>
 
-<div class="grid grid--2" style="align-items:start;grid-template-columns:1.5fr 1fr">
+<div class="grid grid--2 grid--rail">
 
     <!-- ================= The form ================================= -->
     <form class="card" method="post" action="book.php" data-validate-form novalidate>
@@ -357,7 +357,7 @@ include __DIR__ . '/../includes/header.php';
     <div>
         <section class="card">
             <div class="card__body">
-                <div class="person" style="margin-bottom:var(--sp-4)">
+                <div class="person u-mb-4">
                     <span class="avatar avatar--lg" aria-hidden="true"><?= e(initials($provider['full_name'])) ?></span>
                     <div>
                         <div class="person__name"><?= e($provider['full_name']) ?></div>

@@ -148,7 +148,7 @@ $pageLede    = 'Keep your contact details current so professionals can reach you
 include __DIR__ . '/../includes/header.php';
 ?>
 
-<div class="grid grid--2" style="align-items:start;grid-template-columns:1.5fr 1fr">
+<div class="grid grid--2 grid--rail">
 
     <div>
         <!-- ---------------- Details ------------------------------- -->

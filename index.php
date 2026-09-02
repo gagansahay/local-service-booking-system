@@ -214,7 +214,7 @@ $cities = $pdo->query(
                         <span class="provider-card__rate">
                             <?= e(money($p['hourly_rate'])) ?><small>/hr</small>
                         </span>
-                        <a class="btn btn--outline btn--sm" style="margin-left:auto"
+                        <a class="btn btn--outline btn--sm u-ml-auto"
                            href="<?= e(BASE_URL) ?>customer/provider-view.php?id=<?= (int) $p['provider_id'] ?>">
                             View profile
                         </a>
@@ -277,7 +277,7 @@ $cities = $pdo->query(
                 <a class="btn btn--primary" href="<?= e(BASE_URL) ?>auth/register.php">Browse maintenance plans</a>
             </div>
 
-            <div class="card" style="margin:0">
+            <div class="card u-m0">
                 <div class="card__head">
                     <h3>AC Quarterly Care</h3>
                     <span class="badge badge--active">Example</span>

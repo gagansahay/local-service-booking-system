@@ -366,7 +366,7 @@ include __DIR__ . '/../includes/header.php';
                 <div class="contract-head">
                     <div class="contract-head__plan">
                         <h3><?= e($contract['plan_name']) ?></h3>
-                        <p class="text-small text-muted" style="margin:0">
+                        <p class="text-small text-muted u-m0">
                             <span class="ref"><?= e($contract['contract_code']) ?></span>
                             &middot; <?= e($contract['provider_name']) ?>
                             &middot; <?= e(frequency_label($contract['frequency'])) ?>
@@ -374,7 +374,7 @@ include __DIR__ . '/../includes/header.php';
                     </div>
                     <div class="text-right">
                         <?= status_badge($contract['status']) ?>
-                        <div class="text-small text-muted" style="margin-top:var(--sp-1)">
+                        <div class="text-small text-muted u-mt-1">
                             <?= (int) $contract['visits_used'] ?> of
                             <?= (int) $contract['total_visits'] ?> visits used
                         </div>
@@ -460,7 +460,7 @@ include __DIR__ . '/../includes/header.php';
                     <summary class="text-small" style="cursor:pointer;color:var(--blue-600)">
                         Show the full visit log
                     </summary>
-                    <div class="table-wrap" style="margin-top:var(--sp-3)">
+                    <div class="table-wrap u-mt-3">
                         <table class="table">
                             <thead>
                                 <tr><th>#</th><th>Scheduled</th><th>Status</th><th>Completed</th>
@@ -493,7 +493,7 @@ include __DIR__ . '/../includes/header.php';
 <?php endif; ?>
 
 <!-- ==================== PLANS ON OFFER =========================== -->
-<div class="page-head" id="plans" style="margin-top:var(--sp-10)">
+<div class="page-head" id="plans" class="u-mt-6">
     <div>
         <h2>Plans you can subscribe to</h2>
         <p>Each plan schedules its visits automatically for a full year.</p>
@@ -503,11 +503,11 @@ include __DIR__ . '/../includes/header.php';
 <div class="grid grid--2">
     <?php foreach ($plans as $plan): ?>
         <?php $available = $providersByCategory[(int) $plan['category_id']] ?? []; ?>
-        <section class="card" style="margin:0">
+        <section class="card u-m0">
             <div class="card__head">
                 <div>
                     <h3><?= e($plan['icon']) ?> <?= e($plan['plan_name']) ?></h3>
-                    <p class="text-small text-muted" style="margin:0"><?= e($plan['category_name']) ?></p>
+                    <p class="text-small text-muted u-m0"><?= e($plan['category_name']) ?></p>
                 </div>
                 <div class="text-right">
                     <div class="provider-card__rate"><?= e(money($plan['price'])) ?></div>
@@ -535,12 +535,12 @@ include __DIR__ . '/../includes/header.php';
                     </div>
                 <?php else: ?>
                     <details <?= $subscribePlanId === (int) $plan['plan_id'] ? 'open' : '' ?>
-                             style="margin-top:var(--sp-4)">
+                             class="u-mt-4">
                         <summary class="btn btn--accent btn--block" style="cursor:pointer;list-style:none">
                             Subscribe to this plan
                         </summary>
 
-                        <form method="post" action="maintenance.php" style="margin-top:var(--sp-4)">
+                        <form method="post" action="maintenance.php" class="u-mt-4">
                             <?= csrf_field() ?>
                             <input type="hidden" name="action"  value="subscribe">
                             <input type="hidden" name="plan_id" value="<?= (int) $plan['plan_id'] ?>">
@@ -575,7 +575,7 @@ include __DIR__ . '/../includes/header.php';
                             <button class="btn btn--accent btn--block" type="submit">
                                 Confirm &mdash; <?= e(money($plan['price'])) ?>
                             </button>
-                            <p class="hint text-center" style="margin-top:var(--sp-2)">
+                            <p class="hint text-center u-mt-2">
                                 Payment is settled with the professional. No card details are taken here.
                             </p>
                         </form>

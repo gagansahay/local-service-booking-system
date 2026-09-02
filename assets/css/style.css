@@ -676,6 +676,22 @@ p { margin: 0 0 var(--sp-4); }
 
 .grid { display: grid; gap: var(--sp-5); }
 .grid--2 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+
+/* A wide main column beside a narrower rail.
+   ---------------------------------------------------------------
+   This replaces the inline `style="grid-template-columns: 1.6fr 1fr"`
+   that nine pages previously carried. An inline style beats every
+   stylesheet rule, so those pages held two columns at ANY width and
+   overflowed sideways on a phone -- the page then had to zoom out to
+   fit, shrinking all of its text. As a class the layout can collapse
+   where it needs to. */
+.grid--rail { grid-template-columns: 1.6fr 1fr; align-items: start; }
+.grid--rail-wide { grid-template-columns: 1.4fr 1fr; align-items: start; }
+
+@media (max-width: 900px) {
+    .grid--rail,
+    .grid--rail-wide { grid-template-columns: 1fr; }
+}
 .grid--3 { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
 .grid--4 { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
 
@@ -1229,7 +1245,16 @@ p { margin: 0 0 var(--sp-4); }
     .page-head { flex-direction: column; align-items: flex-start; }
     .jobcard__stub { flex-basis: 34px; }
     .userchip__meta { display: none; }
+
+    /* The search stacks here, and the flex axis flips with it. The
+       desktop rule sets `flex: 1 1 180px`, where 180px is a basis along
+       the MAIN axis -- so once that axis is vertical it becomes a 180px
+       HEIGHT, and each dropdown renders four times taller than it
+       should. Resetting the basis is what actually fixes it; setting
+       height alone would still leave flex-grow fighting the layout. */
     .hero__search { flex-direction: column; }
+    .hero__search .select,
+    .hero__search .input { flex: 0 0 auto; width: 100%; }
     .hero__search .btn { width: 100%; }
 }
 
@@ -1256,4 +1281,115 @@ p { margin: 0 0 var(--sp-4); }
     .table th { background: #EEE !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     .badge, .visit-stamp__disc { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     a { color: #000; text-decoration: none; }
+}
+
+/* =====================================================================
+   16. LAYOUT UTILITIES
+   ---------------------------------------------------------------------
+   A small set of classes covering the spacing and alignment tweaks that
+   were previously written as inline style attributes throughout the PHP.
+   Inline styles are not merely untidy: they outrank every stylesheet
+   rule, including the responsive ones, which is how nine pages ended up
+   holding a desktop grid on a 360px phone. Keeping these as classes
+   means the media queries below can still reach them.
+   ===================================================================== */
+.u-m0        { margin: 0; }
+.u-mt-1      { margin-top: var(--sp-1); }
+.u-mt-2      { margin-top: var(--sp-2); }
+.u-mt-3      { margin-top: var(--sp-3); }
+.u-mt-4      { margin-top: var(--sp-4); }
+.u-mt-5      { margin-top: var(--sp-5); }
+.u-mt-6      { margin-top: var(--sp-6); }
+.u-mb-2      { margin-bottom: var(--sp-2); }
+.u-mb-3      { margin-bottom: var(--sp-3); }
+.u-mb-4      { margin-bottom: var(--sp-4); }
+.u-mb-5      { margin-bottom: var(--sp-5); }
+.u-mb-6      { margin-bottom: var(--sp-6); }
+.u-ml-auto   { margin-left: auto; }
+.u-inline    { display: inline; }
+.u-block     { display: block; }
+.u-flush     { border-top: none; border-bottom: none; padding-top: 0; }
+.u-pad-y-8   { padding: var(--sp-8) 0; }
+.u-pad-y-10  { padding: var(--sp-10) 0; }
+.u-ink       { color: var(--ink-900); }
+.u-narrow    { max-width: 240px; }
+.u-w-70      { width: 70px; }
+.stat__value--sm { font-size: var(--text-xl); }
+
+
+/* =====================================================================
+   17. MOBILE ERGONOMICS
+   ---------------------------------------------------------------------
+   Two things are wrong on a phone that are perfectly fine on a desktop:
+   controls sized for a mouse pointer, and 10px labels that are legible
+   at arm's length on a monitor but not in the hand.
+   ===================================================================== */
+@media (max-width: 860px) {
+
+    /* A finger is far less precise than a cursor. 44px is the usual
+       recommendation; 40px is the practical floor once padding and the
+       surrounding gap are counted. */
+    .btn--sm {
+        min-height: 40px;
+        padding-top: 8px;
+        padding-bottom: 8px;
+    }
+    .btn {
+        min-height: 44px;
+    }
+    .table__actions .btn,
+    .btn-row .btn { min-height: 40px; }
+
+    /* Inline text links inside prose need room around them, not a
+       larger font, which would break the line they sit in. */
+    .alert__text a,
+    .card__body a:not(.btn):not(.cat-tile):not(.provider-card__name) {
+        display: inline-block;
+        padding: 4px 0;
+    }
+
+    /* 10px uppercase labels are the smallest thing in the interface and
+       the first to become unreadable on a phone. */
+    .stat__label,
+    .sidebar__group,
+    .sidebar__role,
+    .jobcard__facts dt,
+    .table th,
+    .cat-tile__count,
+    .visit-stamp__label,
+    .provider-card__cat,
+    .brand__sub { font-size: 11.5px; }
+
+    .eyebrow { font-size: var(--text-xs); }
+
+    /* Nothing may push the page wider than the screen. A table is the
+       exception: it scrolls inside its own wrapper by design. */
+    .card, .jobcard, .provider-card, .filters { max-width: 100%; }
+    .table-wrap { max-width: 100%; overflow-x: auto; }
+}
+
+@media (max-width: 620px) {
+    /* The public navigation runs out of room here. The section anchors
+       are a convenience; the account actions are not, so the anchors go
+       first rather than letting the row overflow. */
+    .public-nav__links { gap: var(--sp-3); flex-wrap: wrap; justify-content: flex-end; }
+    .public-nav__links a:not(.btn) { display: none; }
+    .public-nav__inner { gap: var(--sp-3); }
+    .brand__sub { display: none; }
+
+    .hero { padding: var(--sp-10) var(--sp-4); }
+    .hero h1 { font-size: var(--text-xl); }
+    .hero__lede { font-size: var(--text-base); }
+    .hero__stats { gap: var(--sp-5); }
+
+    .content { padding: var(--sp-4) var(--sp-3); }
+    .card__head, .card__body, .card__foot { padding-left: var(--sp-4); padding-right: var(--sp-4); }
+
+    /* Filter bars and form grids go to a single column: two columns of
+       160px plus gaps no longer fit. */
+    .filters__row,
+    .form-grid { grid-template-columns: 1fr; }
+
+    .invoice { padding: var(--sp-4); }
+    .invoice__head, .invoice__parties { gap: var(--sp-4); }
 }

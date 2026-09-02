@@ -196,7 +196,7 @@ $pageLede    = 'The AMC products customers can subscribe to, and the contracts r
 include __DIR__ . '/../includes/header.php';
 ?>
 
-<div class="grid grid--2" style="align-items:start;grid-template-columns:1.5fr 1fr">
+<div class="grid grid--2 grid--rail">
 
     <!-- ---------------- Plans ------------------------------------ -->
     <div>
@@ -208,7 +208,7 @@ include __DIR__ . '/../includes/header.php';
                             <h3 style="margin-bottom:2px">
                                 <?= e($p['icon']) ?> <?= e($p['plan_name']) ?>
                             </h3>
-                            <p class="text-small text-muted" style="margin:0"><?= e($p['category_name']) ?></p>
+                            <p class="text-small text-muted u-m0"><?= e($p['category_name']) ?></p>
                         </div>
                         <div class="text-right">
                             <div class="provider-card__rate"><?= e(money($p['price'])) ?></div>
@@ -229,11 +229,11 @@ include __DIR__ . '/../includes/header.php';
                     </dl>
 
                     <div class="jobcard__foot">
-                        <div class="btn-row" style="margin-left:auto">
+                        <div class="btn-row u-ml-auto">
                             <a class="btn btn--outline btn--sm"
                                href="plans.php?edit=<?= (int) $p['plan_id'] ?>">Edit</a>
 
-                            <form method="post" action="plans.php" style="display:inline">
+                            <form method="post" action="plans.php" class="u-inline">
                                 <?= csrf_field() ?>
                                 <input type="hidden" name="action" value="toggle">
                                 <input type="hidden" name="plan_id" value="<?= (int) $p['plan_id'] ?>">
@@ -243,7 +243,7 @@ include __DIR__ . '/../includes/header.php';
                             </form>
 
                             <?php if ((int) $p['contracts'] === 0): ?>
-                                <form method="post" action="plans.php" style="display:inline">
+                                <form method="post" action="plans.php" class="u-inline">
                                     <?= csrf_field() ?>
                                     <input type="hidden" name="action" value="delete">
                                     <input type="hidden" name="plan_id" value="<?= (int) $p['plan_id'] ?>">
@@ -373,7 +373,7 @@ include __DIR__ . '/../includes/header.php';
     </div>
     <div class="card__body card__body--flush">
         <?php if (!$contracts): ?>
-            <div class="empty" style="padding:var(--sp-10) 0">
+            <div class="empty u-pad-y-10">
                 <div class="empty__icon" aria-hidden="true">&#128467;</div>
                 <h3>No contracts yet</h3>
                 <p>Once a customer subscribes to a plan, their contract will be listed here.</p>

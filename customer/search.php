@@ -242,7 +242,7 @@ include __DIR__ . '/../includes/header.php';
                 <?= star_rating((float) $p['avg_rating'], (int) $p['total_reviews']) ?>
 
                 <?php if (!empty($p['skills'])): ?>
-                    <p class="text-small text-muted" style="margin:0"><?= e(excerpt($p['skills'], 70)) ?></p>
+                    <p class="text-small text-muted u-m0"><?= e(excerpt($p['skills'], 70)) ?></p>
                 <?php endif; ?>
 
                 <div class="provider-card__facts">
@@ -257,7 +257,7 @@ include __DIR__ . '/../includes/header.php';
                     <span class="provider-card__rate">
                         <?= e(money($p['hourly_rate'])) ?><small>/hr</small>
                     </span>
-                    <div class="btn-row" style="margin-left:auto">
+                    <div class="btn-row u-ml-auto">
                         <a class="btn btn--outline btn--sm"
                            href="provider-view.php?id=<?= (int) $p['provider_id'] ?>">Profile</a>
                         <a class="btn btn--accent btn--sm"

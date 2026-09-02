@@ -146,7 +146,7 @@ include __DIR__ . '/../includes/header.php';
     </div>
 <?php endif; ?>
 
-<div class="grid grid--2" style="align-items:start;grid-template-columns:1.6fr 1fr">
+<div class="grid grid--2 grid--rail">
 
     <form class="card" method="post" action="availability.php">
         <?= csrf_field() ?>

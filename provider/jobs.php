@@ -82,7 +82,7 @@ $pageLede    = 'Move each job through the workflow as the work progresses.';
 include __DIR__ . '/../includes/header.php';
 ?>
 
-<div class="btn-row" style="margin-bottom:var(--sp-5)">
+<div class="btn-row u-mb-5">
     <?php foreach ($tabs as $key => $label): ?>
         <a class="btn <?= $filter === $key ? 'btn--primary' : 'btn--outline' ?> btn--sm"
            href="jobs.php?status=<?= e($key) ?>"><?= e($label) ?></a>
@@ -135,19 +135,19 @@ include __DIR__ . '/../includes/header.php';
                     <?php endif; ?>
                 </dl>
 
-                <p class="text-small" style="margin:0 0 var(--sp-3)">
+                <p class="text-small u-m0 u-mb-3">
                     <strong>Address:</strong> <?= e($j['service_address']) ?>
                     <?= $j['city'] ? ', ' . e($j['city']) : '' ?>
                 </p>
 
                 <?php if (!empty($j['problem_description'])): ?>
-                    <p class="text-small text-muted" style="margin:0 0 var(--sp-3)">
+                    <p class="text-small text-muted u-m0 u-mb-3">
                         <?= e($j['problem_description']) ?>
                     </p>
                 <?php endif; ?>
 
                 <?php if (!empty($j['cancellation_reason'])): ?>
-                    <div class="alert alert--warning" style="margin-bottom:var(--sp-3)">
+                    <div class="alert alert--warning u-mb-3">
                         <span class="alert__icon">&#9888;</span>
                         <span class="alert__text"><?= e($j['cancellation_reason']) ?></span>
                     </div>
@@ -157,7 +157,7 @@ include __DIR__ . '/../includes/header.php';
                      transitions table in functions.php -->
                 <div class="jobcard__foot">
                     <?php if ($j['status'] === 'confirmed'): ?>
-                        <form method="post" action="jobs.php" style="margin-left:auto">
+                        <form method="post" action="jobs.php" class="u-ml-auto">
                             <?= csrf_field() ?>
                             <input type="hidden" name="action"     value="set_status">
                             <input type="hidden" name="booking_id" value="<?= (int) $j['booking_id'] ?>">
@@ -198,12 +198,12 @@ include __DIR__ . '/../includes/header.php';
                         </form>
 
                     <?php elseif ($j['status'] === 'completed'): ?>
-                        <span class="text-small text-success" style="margin-left:auto">
+                        <span class="text-small text-success u-ml-auto">
                             &#10004; Completed &middot; <?= e(money($j['final_cost'])) ?> charged
                         </span>
 
                     <?php else: ?>
-                        <span class="text-small text-muted" style="margin-left:auto">
+                        <span class="text-small text-muted u-ml-auto">
                             No further action available.
                         </span>
                     <?php endif; ?>

@@ -76,7 +76,7 @@ $pageLede    = 'Recurring work that is already paid for and scheduled.';
 include __DIR__ . '/../includes/header.php';
 ?>
 
-<div class="grid grid--4" style="margin-bottom:var(--sp-6)">
+<div class="grid grid--4 u-mb-6">
     <div class="stat stat--blue">
         <div class="stat__label">Contracts</div>
         <div class="stat__value"><?= (int) $stats['contracts'] ?></div>
@@ -89,12 +89,12 @@ include __DIR__ . '/../includes/header.php';
     </div>
     <div class="stat stat--success">
         <div class="stat__label">Contract value</div>
-        <div class="stat__value" style="font-size:var(--text-xl)"><?= e(money($stats['contract_value'])) ?></div>
+        <div class="stat__value stat__value--sm"><?= e(money($stats['contract_value'])) ?></div>
         <div class="stat__meta">Committed revenue</div>
     </div>
     <div class="stat">
         <div class="stat__label">Why this matters</div>
-        <div class="text-small" style="margin-top:var(--sp-2)">
+        <div class="text-small u-mt-2">
             Contract work is booked and paid up front, so it is the most predictable
             income on your calendar.
         </div>
@@ -128,7 +128,7 @@ include __DIR__ . '/../includes/header.php';
                     </span>
                     <div class="contract-head__plan">
                         <h3><?= e($contract['plan_name']) ?></h3>
-                        <p class="text-small text-muted" style="margin:0">
+                        <p class="text-small text-muted u-m0">
                             <?= e($contract['customer_name']) ?>
                             &middot; <span class="ref"><?= e($contract['contract_code']) ?></span>
                             &middot; <?= e(frequency_label($contract['frequency'])) ?>
@@ -136,7 +136,7 @@ include __DIR__ . '/../includes/header.php';
                     </div>
                     <div class="text-right">
                         <?= status_badge($contract['status']) ?>
-                        <div class="text-small text-muted" style="margin-top:var(--sp-1)">
+                        <div class="text-small text-muted u-mt-1">
                             <?= (int) $contract['visits_used'] ?> of
                             <?= (int) $contract['total_visits'] ?> visits done
                         </div>
@@ -173,7 +173,7 @@ include __DIR__ . '/../includes/header.php';
                     <summary class="text-small" style="cursor:pointer;color:var(--blue-600)">
                         Show the visit log
                     </summary>
-                    <div class="table-wrap" style="margin-top:var(--sp-3)">
+                    <div class="table-wrap u-mt-3">
                         <table class="table">
                             <thead>
                                 <tr><th>#</th><th>Scheduled</th><th>Status</th><th>Completed</th>

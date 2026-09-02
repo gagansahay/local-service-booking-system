@@ -191,7 +191,7 @@ include __DIR__ . '/../includes/header.php';
     </div>
 <?php endif; ?>
 
-<div class="grid grid--2" style="align-items:start;grid-template-columns:1.5fr 1fr">
+<div class="grid grid--2 grid--rail">
 
     <div>
         <!-- ---------------- Profile ------------------------------- -->
@@ -266,7 +266,7 @@ include __DIR__ . '/../includes/header.php';
                     </div>
                 </div>
 
-                <h3 style="margin-top:var(--sp-6)">Your trade</h3>
+                <h3 class="u-mt-6">Your trade</h3>
 
                 <div class="form-grid">
                     <div class="field">
@@ -397,7 +397,7 @@ include __DIR__ . '/../includes/header.php';
                     <?= star_rating((float) $me['avg_rating'], (int) $me['total_reviews']) ?>
 
                     <?php if (!empty($me['skills'])): ?>
-                        <p class="text-small text-muted" style="margin:0"><?= e(excerpt($me['skills'], 70)) ?></p>
+                        <p class="text-small text-muted u-m0"><?= e(excerpt($me['skills'], 70)) ?></p>
                     <?php endif; ?>
 
                     <div class="provider-card__facts">
@@ -408,7 +408,7 @@ include __DIR__ . '/../includes/header.php';
 
                     <div class="provider-card__foot">
                         <span class="provider-card__rate"><?= e(money($me['hourly_rate'])) ?><small>/hr</small></span>
-                        <span style="margin-left:auto"><?= status_badge($me['verification_status']) ?></span>
+                        <span class="u-ml-auto"><?= status_badge($me['verification_status']) ?></span>
                     </div>
                 </article>
             </div>

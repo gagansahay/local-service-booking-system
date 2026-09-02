@@ -106,7 +106,7 @@ include __DIR__ . '/../includes/header.php';
 ?>
 
 <!-- ==================== COUNTERS ================================= -->
-<div class="grid grid--4" style="margin-bottom:var(--sp-6)">
+<div class="grid grid--4 u-mb-6">
     <div class="stat stat--accent">
         <div class="stat__label">Open jobs</div>
         <div class="stat__value"><?= (int) $stats['open_jobs'] ?></div>
@@ -124,7 +124,7 @@ include __DIR__ . '/../includes/header.php';
     </div>
     <div class="stat">
         <div class="stat__label">Total spent</div>
-        <div class="stat__value" style="font-size:var(--text-xl)"><?= e(money($stats['spent'])) ?></div>
+        <div class="stat__value stat__value--sm"><?= e(money($stats['spent'])) ?></div>
         <div class="stat__meta">Across completed jobs</div>
     </div>
 </div>
@@ -148,7 +148,7 @@ include __DIR__ . '/../includes/header.php';
 
     <!-- ---------------- Upcoming bookings ------------------------- -->
     <section>
-        <div class="page-head" style="margin-bottom:var(--sp-4)">
+        <div class="page-head u-mb-4">
             <h2 style="font-size:var(--text-lg)">What is coming up</h2>
             <a class="btn btn--ghost btn--sm" href="<?= e(BASE_URL) ?>customer/my-bookings.php">See all</a>
         </div>

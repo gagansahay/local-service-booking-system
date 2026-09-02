@@ -132,7 +132,7 @@ $pageLede    = 'Moderate what customers have written. Hiding a review also remov
 include __DIR__ . '/../includes/header.php';
 ?>
 
-<div class="grid grid--4" style="margin-bottom:var(--sp-6)">
+<div class="grid grid--4 u-mb-6">
     <div class="stat stat--accent">
         <div class="stat__label">Average rating</div>
         <div class="stat__value"><?= number_format((float) $stats['avg_rating'], 2) ?></div>
@@ -155,10 +155,10 @@ include __DIR__ . '/../includes/header.php';
     </div>
 </div>
 
-<div class="grid grid--2" style="align-items:start;grid-template-columns:1.7fr 1fr">
+<div class="grid grid--2 grid--rail">
 
     <div>
-        <div class="btn-row" style="margin-bottom:var(--sp-4)">
+        <div class="btn-row u-mb-4">
             <?php foreach ($tabs as $key => $label): ?>
                 <a class="btn <?= $filter === $key ? 'btn--primary' : 'btn--outline' ?> btn--sm"
                    href="feedback.php?status=<?= e($key) ?>"><?= e($label) ?></a>
@@ -191,7 +191,7 @@ include __DIR__ . '/../includes/header.php';
                             </div>
                             <div class="text-right">
                                 <?= star_rating((float) $r['rating']) ?>
-                                <div style="margin-top:var(--sp-1)">
+                                <div class="u-mt-1">
                                     <?= $r['is_approved']
                                         ? '<span class="badge badge--active">Visible</span>'
                                         : '<span class="badge badge--expired">Hidden</span>' ?>
@@ -216,7 +216,7 @@ include __DIR__ . '/../includes/header.php';
                             </span>
 
                             <form method="post" action="feedback.php?status=<?= e($filter) ?>"
-                                  style="margin-left:auto">
+                                  class="u-ml-auto">
                                 <?= csrf_field() ?>
                                 <input type="hidden" name="action" value="moderate">
                                 <input type="hidden" name="feedback_id" value="<?= (int) $r['feedback_id'] ?>">
@@ -258,7 +258,7 @@ include __DIR__ . '/../includes/header.php';
                 <?php endfor; ?>
             <?php endif; ?>
 
-            <div class="alert alert--info" style="margin-top:var(--sp-4)">
+            <div class="alert alert--info u-mt-4">
                 <span class="alert__icon">&#8505;</span>
                 <span class="alert__text">
                     Hidden reviews stay in the database so the moderation decision remains
