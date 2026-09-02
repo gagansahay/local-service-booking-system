@@ -1017,8 +1017,13 @@ p { margin: 0 0 var(--sp-4); }
     display: flex; align-items: center; gap: var(--sp-5);
 }
 .public-nav__links { display: flex; gap: var(--sp-5); margin-left: auto; align-items: center; }
-.public-nav__links a { color: var(--ink-700); font-size: var(--text-base); font-weight: 500; }
-.public-nav__links a:hover { color: var(--indigo-800); }
+/* :not(.btn) matters here. A bare descendant selector like
+   `.public-nav__links a` has higher specificity (0,0,1,1) than the
+   `.btn--primary` class (0,0,1,0), so without this exclusion the nav
+   colour wins and paints the button's label dark-on-dark -- a 1.29:1
+   contrast ratio, i.e. invisible. Buttons keep their own colour. */
+.public-nav__links a:not(.btn) { color: var(--ink-700); font-size: var(--text-base); font-weight: 500; }
+.public-nav__links a:not(.btn):hover { color: var(--indigo-800); }
 
 .brand { display: flex; align-items: center; gap: var(--sp-3); }
 .brand__mark {
@@ -1149,8 +1154,10 @@ p { margin: 0 0 var(--sp-4); }
 .site-foot__inner { max-width: 1180px; margin: 0 auto; }
 .site-foot__cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--sp-8); margin-bottom: var(--sp-8); }
 .site-foot h4 { color: var(--white); font-size: var(--text-sm); margin-bottom: var(--sp-3); }
-.site-foot a { color: #8E99AD; display: block; margin-bottom: var(--sp-2); }
-.site-foot a:hover { color: var(--white); }
+/* Same exclusion as the nav above: any button placed in the footer
+   must keep its own colour rather than inherit the muted link tone. */
+.site-foot a:not(.btn) { color: #8E99AD; display: block; margin-bottom: var(--sp-2); }
+.site-foot a:not(.btn):hover { color: var(--white); }
 .site-foot__bar {
     border-top: 1px solid rgba(255,255,255,.09);
     padding-top: var(--sp-5);
