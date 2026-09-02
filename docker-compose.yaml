@@ -27,13 +27,18 @@ services:
       dockerfile: Dockerfile
     restart: unless-stopped
     environment:
-      # --- Coolify domain ---------------------------------------------
-      # Left deliberately EMPTY. Coolify recognises the pattern
-      # SERVICE_FQDN_<SERVICE>_<PORT> and fills it in with the domain you
-      # assign, then writes the reverse-proxy rules for you.
-      # Running plain `docker compose up` locally just sets an unused
-      # empty variable, so this line is harmless outside Coolify.
-      - SERVICE_FQDN_APP_80
+      # --- NOTE ON THE DOMAIN -----------------------------------------
+      # Do NOT declare SERVICE_FQDN_APP_80 here.
+      #
+      # An earlier version did. Coolify then had two sources for the
+      # domain -- that variable and the one set in its own UI -- and
+      # combined them into "domain//domain/:80". It turned the surplus
+      # into a Traefik PathPrefix rule, so the router only matched
+      # requests whose path began with "//domain/:80". No real request
+      # ever does, and every visitor received a 404.
+      #
+      # Set the domain in the Coolify UI only, on the `app` service.
+      # -----------------------------------------------------------------
 
       # Where to find the database. 'db' is the service name below --
       # Docker's internal DNS resolves it to that container.
@@ -86,15 +91,23 @@ services:
       # The database itself, kept across restarts and redeploys.
       - lsbms_db_data:/var/lib/mysql
 
-      # MySQL runs every .sql file in this directory ONCE, the first time
-      # the data volume is created. Files run in alphabetical order, so
-      # lsbms_schema.sql lands before lsbms_seed.sql -- the tables exist
-      # before the demo rows are inserted.
+      # --- NOTE ON SEEDING --------------------------------------------
+      # There are deliberately NO bind mounts into
+      # /docker-entrypoint-initdb.d/ here.
       #
-      # Because it only runs on an empty volume, a later redeploy will
-      # NOT wipe real data. To reseed deliberately, delete the volume.
-      - ./database/lsbms_schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
-      - ./database/lsbms_seed.sql:/docker-entrypoint-initdb.d/02-seed.sql:ro
+      # An earlier version mounted ./database/*.sql into that directory.
+      # That works with plain Docker Compose, where the repository sits
+      # on the host beside this file. It fails on a platform such as
+      # Coolify, which builds the image from a checkout it then discards:
+      # the host path does not exist, so Docker silently creates an empty
+      # DIRECTORY in its place. MySQL then finds no .sql files, the
+      # database initialises empty, and every page returns HTTP 500.
+      #
+      # Seeding is now done by docker/init-db.php from inside the
+      # application container, where the SQL files are baked into the
+      # image. It is idempotent, so a redeploy never overwrites live
+      # data.
+      # -----------------------------------------------------------------
     healthcheck:
       # The app waits for this to pass before starting, so it never comes
       # up pointing at a database that is not ready yet.

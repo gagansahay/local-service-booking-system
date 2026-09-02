@@ -100,9 +100,23 @@ COPY . /var/www/html/
 # Apache, which limits the damage any single bug can do.
 RUN mkdir -p /var/www/html/assets/uploads \
     && chown -R www-data:www-data /var/www/html/assets/uploads \
-    && chmod 755 /var/www/html/assets/uploads
+    && chmod 755 /var/www/html/assets/uploads \
+    && chmod +x /var/www/html/docker/entrypoint.sh
 
 EXPOSE 80
 
-HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
-    CMD php -r 'exit(@file_get_contents("http://127.0.0.1/index.php") ? 0 : 1);'
+# ---------------------------------------------------------------------
+# Health check
+# ---------------------------------------------------------------------
+# The status line is printed on failure rather than suppressed. An
+# earlier version used @file_get_contents(), which hid the reason the
+# probe failed and left `docker inspect` reporting an empty output for
+# every one of 132 consecutive failures -- true, but useless.
+# ---------------------------------------------------------------------
+HEALTHCHECK --interval=30s --timeout=10s --start-period=45s --retries=3 \
+    CMD php -r '$c = @file_get_contents("http://127.0.0.1/index.php"); \
+        if ($c === false) { echo $http_response_header[0] ?? "no response", "\n"; exit(1); } \
+        exit(0);'
+
+# The entrypoint seeds an empty database before starting Apache.
+ENTRYPOINT ["/var/www/html/docker/entrypoint.sh"]
