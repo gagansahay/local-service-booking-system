@@ -1,0 +1,1224 @@
+/* =====================================================================
+   LOCAL SERVICE BOOKING & MANAGEMENT SYSTEM
+   BCSP-064 -- Bachelor of Computer Applications, IGNOU
+   ---------------------------------------------------------------------
+   FILE    : assets/css/style.css
+   PURPOSE : Complete stylesheet. Hand-written CSS3 -- no framework, in
+             keeping with the approved tools list (HTML, CSS, JavaScript,
+             PHP, MySQL).
+
+   CONTENTS
+     1.  Design tokens
+     2.  Reset and base
+     3.  Typography
+     4.  Layout shell (sidebar, topbar, content)
+     5.  Buttons
+     6.  Forms
+     7.  Cards and statistics
+     8.  Tables
+     9.  Badges, ratings, avatars
+     10. Job card and AMC visit strip   <- signature components
+     11. Alerts, empty states, modals
+     12. Pagination
+     13. Public landing page
+     14. Responsive rules
+     15. Print rules
+   ===================================================================== */
+
+
+/* =====================================================================
+   1. DESIGN TOKENS
+   ---------------------------------------------------------------------
+   Every colour and measurement in the file resolves to one of these
+   custom properties. Changing the brand therefore means editing this
+   block only, never hunting through the rules below.
+   ===================================================================== */
+:root {
+    /* -- Brand -------------------------------------------------------
+       Indigo-slate is the authority colour used for navigation and
+       headings. Marigold is the single accent: it is the colour of a
+       tradesperson's hi-vis vest, and it is used sparingly so that it
+       always means "this is the action". */
+    --indigo-900: #101A2C;
+    --indigo-800: #16233A;
+    --indigo-700: #1E3050;
+    --indigo-600: #2A4269;
+
+    --blue-600:   #2B5AA7;
+    --blue-500:   #3A6FC4;
+    --blue-100:   #E4EDF9;
+
+    --marigold-600: #C97F00;
+    --marigold-500: #F0A202;
+    --marigold-200: #FDEAC2;
+    --marigold-100: #FEF6E6;
+
+    /* -- Semantic status ---------------------------------------------
+       Each status also carries a distinct border and text weight, so
+       the interface stays readable in a black-and-white printout of
+       the project report. Colour is never the only signal. */
+    --green-600: #1F8A5F;
+    --green-100: #E3F4EC;
+    --red-600:   #C9333C;
+    --red-100:   #FCEAEB;
+    --amber-600: #B5730B;
+    --amber-100: #FDF1DA;
+    --grey-600:  #5A6474;
+    --grey-100:  #EDEFF3;
+
+    /* -- Neutrals ----------------------------------------------------- */
+    --ink-900: #0F1620;
+    --ink-700: #2C3644;
+    --ink-500: #5A6474;
+    --ink-400: #7A8496;
+    --ink-300: #AEB6C4;
+    --line:    #DFE3EA;
+    --line-soft: #EDF0F5;
+    --paper:   #F5F7FA;
+    --white:   #FFFFFF;
+
+    /* -- Typography ---------------------------------------------------
+       Google Fonts are requested by the page, but every stack ends in a
+       face that ships with Windows. If the demo machine is offline --
+       which it may well be during the viva -- the layout is unchanged
+       and only the letterforms differ. */
+    --font-display: 'Archivo', 'Segoe UI Semibold', 'Segoe UI', Roboto, sans-serif;
+    --font-body:    'IBM Plex Sans', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    --font-mono:    'IBM Plex Mono', 'Cascadia Mono', Consolas, 'Courier New', monospace;
+
+    --text-xs:   0.75rem;
+    --text-sm:   0.8125rem;
+    --text-base: 0.9375rem;
+    --text-md:   1.0625rem;
+    --text-lg:   1.25rem;
+    --text-xl:   1.5rem;
+    --text-2xl:  1.9375rem;
+    --text-3xl:  2.5rem;
+
+    /* -- Spacing (4px base) ------------------------------------------- */
+    --sp-1: 4px;   --sp-2: 8px;   --sp-3: 12px;  --sp-4: 16px;
+    --sp-5: 20px;  --sp-6: 24px;  --sp-8: 32px;  --sp-10: 40px;
+    --sp-12: 48px; --sp-16: 64px;
+
+    /* -- Shape and depth ----------------------------------------------- */
+    --radius-sm: 5px;
+    --radius:    9px;
+    --radius-lg: 14px;
+
+    --shadow-sm: 0 1px 2px rgba(16, 26, 44, .06);
+    --shadow:    0 2px 8px rgba(16, 26, 44, .07);
+    --shadow-md: 0 8px 24px rgba(16, 26, 44, .10);
+    --shadow-lg: 0 18px 48px rgba(16, 26, 44, .16);
+
+    --sidebar-w: 248px;
+    --topbar-h:  62px;
+
+    --ease: cubic-bezier(.4, 0, .2, 1);
+}
+
+
+/* =====================================================================
+   2. RESET AND BASE
+   ===================================================================== */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    line-height: 1.55;
+    color: var(--ink-700);
+    background: var(--paper);
+    -webkit-font-smoothing: antialiased;
+}
+
+img, svg { max-width: 100%; display: block; }
+
+a { color: var(--blue-600); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* A single, unmissable focus ring everywhere. Keyboard users must be
+   able to see where they are -- this is the accessibility floor. */
+:focus-visible {
+    outline: 3px solid var(--marigold-500);
+    outline-offset: 2px;
+    border-radius: 3px;
+}
+
+/* Respect the operating-system "reduce motion" setting. */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* Skip link for keyboard and screen-reader users. */
+.skip-link {
+    position: absolute; left: -9999px; top: 0; z-index: 999;
+    background: var(--indigo-800); color: var(--white);
+    padding: var(--sp-3) var(--sp-5); border-radius: 0 0 var(--radius) 0;
+}
+.skip-link:focus { left: 0; }
+
+.visually-hidden {
+    position: absolute; width: 1px; height: 1px;
+    margin: -1px; padding: 0; overflow: hidden;
+    clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+
+/* =====================================================================
+   3. TYPOGRAPHY
+   ===================================================================== */
+h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    color: var(--ink-900);
+    margin: 0 0 var(--sp-3);
+    line-height: 1.2;
+    letter-spacing: -.015em;
+}
+h1 { font-size: var(--text-2xl); font-weight: 700; }
+h2 { font-size: var(--text-xl);  font-weight: 700; }
+h3 { font-size: var(--text-md);  font-weight: 600; }
+h4 { font-size: var(--text-base); font-weight: 600; }
+
+p { margin: 0 0 var(--sp-4); }
+
+/* The eyebrow labels a section by its role in the workflow. It is only
+   used where that role is not obvious from the heading alone. */
+.eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    letter-spacing: .11em;
+    text-transform: uppercase;
+    color: var(--marigold-600);
+    margin: 0 0 var(--sp-2);
+}
+
+/* Reference numbers -- booking codes, contract codes, invoice numbers.
+   Monospace because these are read aloud, compared character by
+   character and quoted over the phone. */
+.ref {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    letter-spacing: .01em;
+    color: var(--ink-700);
+    background: var(--grey-100);
+    padding: 2px var(--sp-2);
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+}
+
+.text-muted { color: var(--ink-500); }
+.text-small { font-size: var(--text-sm); }
+.text-right { text-align: right; }
+.text-center { text-align: center; }
+.text-danger { color: var(--red-600); }
+.text-success { color: var(--green-600); }
+
+
+/* =====================================================================
+   4. LAYOUT SHELL
+   ===================================================================== */
+.shell { display: flex; min-height: 100vh; }
+
+/* -- Sidebar ---------------------------------------------------------- */
+.sidebar {
+    width: var(--sidebar-w);
+    flex: 0 0 var(--sidebar-w);
+    background: var(--indigo-800);
+    color: #C3CBDA;
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.sidebar__brand {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    padding: var(--sp-5) var(--sp-5) var(--sp-4);
+    border-bottom: 1px solid rgba(255, 255, 255, .09);
+}
+.sidebar__mark {
+    width: 34px; height: 34px; flex: 0 0 34px;
+    border-radius: 8px;
+    background: var(--marigold-500);
+    color: var(--indigo-900);
+    display: grid; place-items: center;
+    font-family: var(--font-display);
+    font-weight: 700; font-size: 15px;
+    letter-spacing: -.02em;
+}
+.sidebar__name {
+    font-family: var(--font-display);
+    font-weight: 600; font-size: var(--text-base);
+    color: var(--white); line-height: 1.25;
+}
+.sidebar__role {
+    font-family: var(--font-mono);
+    font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--marigold-500);
+}
+
+.sidebar__nav { padding: var(--sp-4) var(--sp-3); flex: 1; }
+
+.sidebar__group {
+    font-family: var(--font-mono);
+    font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
+    color: #6D7A92;
+    padding: var(--sp-4) var(--sp-3) var(--sp-2);
+}
+.sidebar__group:first-child { padding-top: 0; }
+
+.sidebar__link {
+    display: flex; align-items: center; gap: var(--sp-3);
+    padding: 9px var(--sp-3);
+    border-radius: var(--radius-sm);
+    color: #C3CBDA;
+    font-size: var(--text-base);
+    transition: background .15s var(--ease), color .15s var(--ease);
+}
+.sidebar__link:hover {
+    background: rgba(255, 255, 255, .07);
+    color: var(--white);
+    text-decoration: none;
+}
+/* The active item is marked by a marigold rail as well as a background
+   tint, so the current page is still identifiable in a greyscale
+   printout of the report. */
+.sidebar__link.is-active {
+    background: rgba(255, 255, 255, .10);
+    color: var(--white);
+    font-weight: 600;
+    box-shadow: inset 3px 0 0 var(--marigold-500);
+}
+.sidebar__icon { width: 18px; text-align: center; flex: 0 0 18px; opacity: .9; }
+
+.sidebar__count {
+    margin-left: auto;
+    background: var(--marigold-500);
+    color: var(--indigo-900);
+    font-size: 11px; font-weight: 700;
+    min-width: 19px; height: 19px; padding: 0 5px;
+    border-radius: 10px;
+    display: grid; place-items: center;
+}
+
+.sidebar__foot {
+    padding: var(--sp-4) var(--sp-5);
+    border-top: 1px solid rgba(255, 255, 255, .09);
+    font-size: var(--text-xs);
+    color: #6D7A92;
+    line-height: 1.5;
+}
+
+/* -- Main column ------------------------------------------------------ */
+.main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+
+.topbar {
+    height: var(--topbar-h);
+    background: var(--white);
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: center; gap: var(--sp-4);
+    padding: 0 var(--sp-6);
+    position: sticky; top: 0; z-index: 40;
+}
+.topbar__title {
+    font-family: var(--font-display);
+    font-weight: 600; font-size: var(--text-md);
+    color: var(--ink-900);
+}
+.topbar__spacer { flex: 1; }
+
+.topbar__toggle {
+    display: none;
+    background: none; border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    width: 36px; height: 36px;
+    font-size: 17px; cursor: pointer; color: var(--ink-700);
+}
+
+.content { padding: var(--sp-6); flex: 1; }
+.content--narrow { max-width: 760px; }
+
+.page-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: var(--sp-4); flex-wrap: wrap;
+    margin-bottom: var(--sp-6);
+}
+.page-head p { margin: 0; color: var(--ink-500); }
+.page-head h1 { margin-bottom: var(--sp-1); }
+
+/* -- Notification bell ------------------------------------------------ */
+.bell { position: relative; }
+.bell__button {
+    background: none; border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    width: 36px; height: 36px; font-size: 15px;
+    cursor: pointer; color: var(--ink-700);
+    display: grid; place-items: center;
+}
+.bell__button:hover { background: var(--paper); }
+.bell__dot {
+    position: absolute; top: -5px; right: -5px;
+    background: var(--red-600); color: var(--white);
+    font-size: 10px; font-weight: 700;
+    min-width: 17px; height: 17px; padding: 0 4px;
+    border-radius: 9px; display: grid; place-items: center;
+    border: 2px solid var(--white);
+}
+.bell__panel {
+    position: absolute; right: 0; top: calc(100% + 8px);
+    width: 320px; max-height: 380px; overflow-y: auto;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    z-index: 60;
+}
+.bell__item {
+    display: block;
+    padding: var(--sp-3) var(--sp-4);
+    border-bottom: 1px solid var(--line-soft);
+    color: var(--ink-700);
+}
+.bell__item:hover { background: var(--paper); text-decoration: none; }
+.bell__item.is-unread { background: var(--marigold-100); }
+.bell__item strong { display: block; color: var(--ink-900); font-size: var(--text-sm); }
+.bell__item span { font-size: var(--text-xs); color: var(--ink-500); }
+
+/* -- User chip -------------------------------------------------------- */
+.userchip { display: flex; align-items: center; gap: var(--sp-3); }
+.userchip__meta { line-height: 1.25; }
+.userchip__name { font-weight: 600; font-size: var(--text-sm); color: var(--ink-900); }
+.userchip__role { font-size: var(--text-xs); color: var(--ink-500); text-transform: capitalize; }
+
+
+/* =====================================================================
+   5. BUTTONS
+   ===================================================================== */
+.btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    gap: var(--sp-2);
+    font-family: var(--font-body);
+    font-size: var(--text-base); font-weight: 600;
+    padding: 9px var(--sp-5);
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background .15s var(--ease), border-color .15s var(--ease),
+                transform .08s var(--ease), box-shadow .15s var(--ease);
+    white-space: nowrap;
+    text-decoration: none;
+}
+.btn:hover { text-decoration: none; }
+.btn:active { transform: translateY(1px); }
+.btn[disabled], .btn.is-disabled {
+    opacity: .5; cursor: not-allowed; pointer-events: none;
+}
+
+.btn--primary {
+    background: var(--indigo-800); color: var(--white);
+    box-shadow: var(--shadow-sm);
+}
+.btn--primary:hover { background: var(--indigo-700); }
+
+/* Marigold is reserved for the single most important action on a
+   screen -- booking, confirming, subscribing. Using it twice in one
+   view would dilute the signal. */
+.btn--accent {
+    background: var(--marigold-500); color: var(--indigo-900);
+    box-shadow: var(--shadow-sm);
+}
+.btn--accent:hover { background: var(--marigold-600); color: var(--white); }
+
+.btn--outline {
+    background: var(--white); color: var(--ink-700);
+    border-color: var(--line);
+}
+.btn--outline:hover { background: var(--paper); border-color: var(--ink-300); }
+
+.btn--success { background: var(--green-600); color: var(--white); }
+.btn--success:hover { filter: brightness(1.08); }
+
+.btn--danger { background: var(--red-600); color: var(--white); }
+.btn--danger:hover { filter: brightness(1.08); }
+
+.btn--ghost { background: none; color: var(--ink-500); padding: 6px var(--sp-3); }
+.btn--ghost:hover { background: var(--grey-100); color: var(--ink-900); }
+
+.btn--sm { font-size: var(--text-sm); padding: 5px var(--sp-3); }
+.btn--lg { font-size: var(--text-md); padding: 13px var(--sp-8); }
+.btn--block { display: flex; width: 100%; }
+
+.btn-row { display: flex; gap: var(--sp-2); flex-wrap: wrap; align-items: center; }
+
+
+/* =====================================================================
+   6. FORMS
+   ===================================================================== */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: var(--sp-4) var(--sp-5);
+}
+.form-grid--single { grid-template-columns: 1fr; }
+.field--full { grid-column: 1 / -1; }
+
+.field { margin-bottom: var(--sp-4); }
+.form-grid > .field { margin-bottom: 0; }
+
+.label {
+    display: block;
+    font-size: var(--text-sm); font-weight: 600;
+    color: var(--ink-700);
+    margin-bottom: var(--sp-2);
+}
+.label .req { color: var(--red-600); margin-left: 2px; }
+
+.input, .select, .textarea {
+    width: 100%;
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    color: var(--ink-900);
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 9px var(--sp-3);
+    transition: border-color .15s var(--ease), box-shadow .15s var(--ease);
+}
+.input:hover, .select:hover, .textarea:hover { border-color: var(--ink-300); }
+.input:focus, .select:focus, .textarea:focus {
+    outline: none;
+    border-color: var(--blue-500);
+    box-shadow: 0 0 0 3px var(--blue-100);
+}
+.textarea { min-height: 96px; resize: vertical; }
+
+.select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath fill='%235A6474' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: var(--sp-8);
+}
+
+.input.is-invalid, .select.is-invalid, .textarea.is-invalid {
+    border-color: var(--red-600);
+    box-shadow: 0 0 0 3px var(--red-100);
+}
+
+.hint  { font-size: var(--text-xs); color: var(--ink-500); margin-top: var(--sp-1); }
+.error { font-size: var(--text-xs); color: var(--red-600); margin-top: var(--sp-1); font-weight: 500; }
+
+.check {
+    display: flex; align-items: flex-start; gap: var(--sp-2);
+    font-size: var(--text-sm); cursor: pointer;
+}
+.check input { margin-top: 3px; accent-color: var(--blue-600); flex: 0 0 auto; }
+
+/* Role selector on the registration screen. */
+.role-picker { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-3); }
+.role-option { position: relative; }
+.role-option input { position: absolute; opacity: 0; pointer-events: none; }
+.role-option__body {
+    display: block; cursor: pointer;
+    border: 2px solid var(--line);
+    border-radius: var(--radius);
+    padding: var(--sp-4);
+    text-align: center;
+    transition: border-color .15s var(--ease), background .15s var(--ease);
+}
+.role-option__body:hover { border-color: var(--ink-300); }
+.role-option input:checked + .role-option__body {
+    border-color: var(--marigold-500);
+    background: var(--marigold-100);
+}
+.role-option input:focus-visible + .role-option__body {
+    outline: 3px solid var(--marigold-500); outline-offset: 2px;
+}
+.role-option__icon { font-size: 22px; margin-bottom: var(--sp-1); }
+.role-option__title { font-weight: 600; color: var(--ink-900); font-size: var(--text-base); }
+.role-option__desc { font-size: var(--text-xs); color: var(--ink-500); }
+
+/* Password strength meter. */
+.meter { height: 4px; background: var(--grey-100); border-radius: 2px; overflow: hidden; margin-top: var(--sp-2); }
+.meter__fill { height: 100%; width: 0; transition: width .25s var(--ease), background .25s var(--ease); }
+.meter__fill.is-weak   { width: 33%; background: var(--red-600); }
+.meter__fill.is-medium { width: 66%; background: var(--marigold-500); }
+.meter__fill.is-strong { width: 100%; background: var(--green-600); }
+
+/* Auth screens -------------------------------------------------------- */
+.auth {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+.auth__aside {
+    background: var(--indigo-800);
+    color: #C3CBDA;
+    padding: var(--sp-12) var(--sp-10);
+    display: flex; flex-direction: column; justify-content: center;
+    position: relative; overflow: hidden;
+}
+/* A faint blueprint grid -- the drawing a tradesperson works from. */
+.auth__aside::before {
+    content: ''; position: absolute; inset: 0;
+    background-image:
+        linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px);
+    background-size: 28px 28px;
+    pointer-events: none;
+}
+.auth__aside > * { position: relative; }
+.auth__aside h2 { color: var(--white); font-size: var(--text-2xl); max-width: 15ch; }
+.auth__points { list-style: none; margin: var(--sp-8) 0 0; padding: 0; }
+.auth__points li {
+    display: flex; gap: var(--sp-3); align-items: flex-start;
+    margin-bottom: var(--sp-4); font-size: var(--text-base);
+}
+.auth__points b { color: var(--white); display: block; font-weight: 600; }
+.auth__tick { color: var(--marigold-500); font-size: 15px; }
+
+.auth__panel {
+    display: flex; align-items: center; justify-content: center;
+    padding: var(--sp-10) var(--sp-6);
+    background: var(--white);
+    overflow-y: auto;
+}
+.auth__form { width: 100%; max-width: 430px; }
+.auth__form h1 { margin-bottom: var(--sp-1); }
+.auth__lede { color: var(--ink-500); margin-bottom: var(--sp-6); }
+
+/* Demo credential helper shown on the login screen. */
+.demo-keys {
+    margin-top: var(--sp-6);
+    border: 1px dashed var(--line);
+    border-radius: var(--radius);
+    padding: var(--sp-4);
+    background: var(--paper);
+}
+.demo-keys h4 { margin-bottom: var(--sp-2); font-size: var(--text-sm); }
+.demo-keys table { width: 100%; border-collapse: collapse; font-size: var(--text-xs); }
+.demo-keys td { padding: 3px 0; }
+.demo-keys td:first-child { color: var(--ink-500); text-transform: capitalize; }
+.demo-keys code { font-family: var(--font-mono); color: var(--ink-900); }
+.demo-fill {
+    background: none; border: none; padding: 0;
+    color: var(--blue-600); cursor: pointer;
+    font-size: var(--text-xs); font-family: inherit; text-decoration: underline;
+}
+
+
+/* =====================================================================
+   7. CARDS AND STATISTICS
+   ===================================================================== */
+.card {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: var(--sp-5);
+}
+.card__head {
+    padding: var(--sp-4) var(--sp-5);
+    border-bottom: 1px solid var(--line-soft);
+    display: flex; align-items: center; justify-content: space-between;
+    gap: var(--sp-4); flex-wrap: wrap;
+}
+.card__head h3 { margin: 0; }
+.card__body { padding: var(--sp-5); }
+.card__body--flush { padding: 0; }
+.card__foot {
+    padding: var(--sp-3) var(--sp-5);
+    border-top: 1px solid var(--line-soft);
+    background: var(--paper);
+    border-radius: 0 0 var(--radius) var(--radius);
+}
+
+.grid { display: grid; gap: var(--sp-5); }
+.grid--2 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.grid--3 { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.grid--4 { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+
+/* -- Statistic tile ---------------------------------------------------
+   The label sits ABOVE the number. A dashboard is scanned by label
+   first ("where is revenue?"), so putting the label on top matches how
+   the tile is actually read. */
+.stat {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--ink-300);
+    border-radius: var(--radius);
+    padding: var(--sp-4) var(--sp-5);
+    box-shadow: var(--shadow-sm);
+}
+.stat__label {
+    font-family: var(--font-mono);
+    font-size: 10px; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--ink-500);
+    margin-bottom: var(--sp-2);
+}
+.stat__value {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl); font-weight: 700;
+    color: var(--ink-900); line-height: 1;
+    letter-spacing: -.02em;
+}
+.stat__meta { font-size: var(--text-xs); color: var(--ink-500); margin-top: var(--sp-2); }
+
+.stat--accent  { border-left-color: var(--marigold-500); }
+.stat--blue    { border-left-color: var(--blue-600); }
+.stat--success { border-left-color: var(--green-600); }
+.stat--danger  { border-left-color: var(--red-600); }
+
+
+/* =====================================================================
+   8. TABLES
+   ===================================================================== */
+/* Wide tables scroll inside their own container so the page body never
+   scrolls sideways on a narrow screen. */
+.table-wrap { overflow-x: auto; }
+
+.table { width: 100%; border-collapse: collapse; font-size: var(--text-sm); }
+.table th {
+    text-align: left;
+    font-family: var(--font-mono);
+    font-size: 10px; letter-spacing: .09em; text-transform: uppercase;
+    color: var(--ink-500); font-weight: 500;
+    padding: var(--sp-3) var(--sp-4);
+    border-bottom: 1px solid var(--line);
+    background: var(--paper);
+    white-space: nowrap;
+}
+.table td {
+    padding: var(--sp-3) var(--sp-4);
+    border-bottom: 1px solid var(--line-soft);
+    vertical-align: middle;
+    color: var(--ink-700);
+}
+.table tbody tr:last-child td { border-bottom: none; }
+.table tbody tr:hover { background: #FAFBFD; }
+.table__primary { font-weight: 600; color: var(--ink-900); }
+.table__actions { display: flex; gap: var(--sp-2); justify-content: flex-end; }
+.table--fixed { table-layout: fixed; }
+
+
+/* =====================================================================
+   9. BADGES, RATINGS, AVATARS
+   ---------------------------------------------------------------------
+   Every badge carries a coloured border in addition to its fill, so the
+   states remain distinguishable when the report is printed in
+   greyscale.
+   ===================================================================== */
+.badge {
+    display: inline-block;
+    font-size: 11px; font-weight: 600;
+    letter-spacing: .02em;
+    padding: 3px var(--sp-3);
+    border-radius: 20px;
+    border: 1px solid transparent;
+    white-space: nowrap;
+}
+.badge--pending,   .badge--due       { background: var(--amber-100); color: var(--amber-600); border-color: #E9C88A; }
+.badge--confirmed, .badge--scheduled { background: var(--blue-100);  color: var(--blue-600);  border-color: #AEC8EC; }
+.badge--in_progress                  { background: var(--marigold-200); color: var(--marigold-600); border-color: #E7BE72; }
+.badge--completed, .badge--active,
+.badge--verified,  .badge--paid      { background: var(--green-100); color: var(--green-600); border-color: #9FD4BC; }
+.badge--cancelled, .badge--rejected,
+.badge--suspended, .badge--missed    { background: var(--red-100);   color: var(--red-600);   border-color: #EDAFB3; }
+.badge--expired,   .badge--refunded  { background: var(--grey-100);  color: var(--grey-600);  border-color: var(--ink-300); }
+
+.rating { display: inline-flex; align-items: center; gap: 1px; }
+.star { font-size: 13px; line-height: 1; }
+.star--full, .star--half { color: var(--marigold-500); }
+.star--empty { color: var(--ink-300); }
+.rating__count { margin-left: var(--sp-2); font-size: var(--text-xs); color: var(--ink-500); }
+.rating__count--none { font-style: italic; }
+
+.avatar {
+    width: 36px; height: 36px; flex: 0 0 36px;
+    border-radius: 50%;
+    background: var(--blue-600); color: var(--white);
+    display: grid; place-items: center;
+    font-size: var(--text-sm); font-weight: 600;
+    object-fit: cover;
+    text-transform: uppercase;
+}
+.avatar--lg { width: 60px; height: 60px; flex-basis: 60px; font-size: var(--text-lg); }
+.avatar--sm { width: 28px; height: 28px; flex-basis: 28px; font-size: 11px; }
+
+.person { display: flex; align-items: center; gap: var(--sp-3); }
+.person__name { font-weight: 600; color: var(--ink-900); }
+.person__meta { font-size: var(--text-xs); color: var(--ink-500); }
+
+
+/* =====================================================================
+   10. JOB CARD AND AMC VISIT STRIP        <- signature components
+   ---------------------------------------------------------------------
+   The job card mirrors the paper work-order a technician carries: a
+   tear-off stub down the left edge holding the reference number, then
+   the job details. The AMC visit strip mirrors the service card stuck
+   to the back of an appliance -- a row of numbered stamps, filled in as
+   each maintenance visit is completed. Both encode real data rather
+   than decorating the page.
+   ===================================================================== */
+.jobcard {
+    display: flex;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: var(--sp-4);
+    transition: box-shadow .18s var(--ease), border-color .18s var(--ease);
+}
+.jobcard:hover { box-shadow: var(--shadow-md); border-color: var(--ink-300); }
+
+/* The stub. A dashed rule stands in for the perforation. */
+.jobcard__stub {
+    flex: 0 0 46px;
+    background: var(--indigo-800);
+    border-right: 2px dashed rgba(255, 255, 255, .28);
+    color: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    padding: var(--sp-3) 0;
+}
+.jobcard__code {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-family: var(--font-mono);
+    font-size: 11px; letter-spacing: .08em;
+    white-space: nowrap;
+}
+.jobcard__stub--pending     { background: var(--amber-600); }
+.jobcard__stub--confirmed   { background: var(--blue-600); }
+.jobcard__stub--in_progress { background: var(--marigold-600); }
+.jobcard__stub--completed   { background: var(--green-600); }
+.jobcard__stub--cancelled,
+.jobcard__stub--rejected    { background: var(--grey-600); }
+
+.jobcard__body { flex: 1; padding: var(--sp-4) var(--sp-5); min-width: 0; }
+.jobcard__top {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: var(--sp-4); margin-bottom: var(--sp-3); flex-wrap: wrap;
+}
+.jobcard__title { font-family: var(--font-display); font-size: var(--text-md); font-weight: 600; color: var(--ink-900); margin: 0; }
+.jobcard__sub { font-size: var(--text-sm); color: var(--ink-500); }
+
+/* Key/value facts. Definition list is the honest markup here: each
+   value genuinely describes its label. */
+.jobcard__facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: var(--sp-3) var(--sp-5);
+    margin: 0 0 var(--sp-4);
+    padding: var(--sp-3) 0;
+    border-top: 1px solid var(--line-soft);
+    border-bottom: 1px solid var(--line-soft);
+}
+.jobcard__facts dt {
+    font-family: var(--font-mono);
+    font-size: 10px; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--ink-400); margin-bottom: 2px;
+}
+.jobcard__facts dd { margin: 0; font-size: var(--text-sm); color: var(--ink-900); font-weight: 500; }
+
+.jobcard__foot { display: flex; align-items: center; gap: var(--sp-3); flex-wrap: wrap; }
+.jobcard__foot .btn-row { margin-left: auto; }
+
+/* -- AMC visit strip -------------------------------------------------- */
+.visit-strip {
+    display: flex; align-items: center; gap: 0;
+    padding: var(--sp-4) 0 var(--sp-2);
+    overflow-x: auto;
+}
+.visit-stamp {
+    display: flex; flex-direction: column; align-items: center;
+    gap: var(--sp-2); flex: 0 0 auto; position: relative;
+    padding: 0 var(--sp-4);
+}
+/* The connector line between stamps, drawn behind the discs. */
+.visit-stamp:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 17px; left: 50%; width: 100%; height: 2px;
+    background: var(--line);
+    z-index: 0;
+}
+.visit-stamp--completed:not(:last-child)::after { background: var(--green-600); }
+
+.visit-stamp__disc {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    display: grid; place-items: center;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm); font-weight: 600;
+    background: var(--white);
+    border: 2px solid var(--line);
+    color: var(--ink-400);
+    position: relative; z-index: 1;
+}
+.visit-stamp__label {
+    font-size: 10px; color: var(--ink-500); white-space: nowrap;
+    font-family: var(--font-mono); letter-spacing: .04em;
+}
+
+.visit-stamp--completed .visit-stamp__disc {
+    background: var(--green-600); border-color: var(--green-600); color: var(--white);
+}
+.visit-stamp--completed .visit-stamp__label { color: var(--green-600); font-weight: 600; }
+
+.visit-stamp--due .visit-stamp__disc {
+    background: var(--marigold-500); border-color: var(--marigold-600); color: var(--indigo-900);
+    box-shadow: 0 0 0 4px var(--marigold-100);
+}
+.visit-stamp--due .visit-stamp__label { color: var(--marigold-600); font-weight: 600; }
+
+.visit-stamp--missed .visit-stamp__disc {
+    background: var(--red-100); border-color: var(--red-600); color: var(--red-600);
+}
+
+/* Contract summary header. */
+.contract-head {
+    display: flex; align-items: center; gap: var(--sp-5);
+    flex-wrap: wrap;
+    padding-bottom: var(--sp-4);
+    border-bottom: 1px solid var(--line-soft);
+}
+.contract-head__plan { flex: 1; min-width: 200px; }
+.contract-head__plan h3 { margin-bottom: 2px; }
+
+
+/* =====================================================================
+   11. ALERTS, EMPTY STATES, MODALS
+   ===================================================================== */
+.alert {
+    display: flex; align-items: flex-start; gap: var(--sp-3);
+    padding: var(--sp-3) var(--sp-4);
+    border-radius: var(--radius-sm);
+    border-left: 3px solid;
+    margin-bottom: var(--sp-4);
+    font-size: var(--text-sm);
+}
+.alert__icon { flex: 0 0 auto; font-size: 14px; line-height: 1.5; }
+.alert__text { flex: 1; }
+.alert__close {
+    background: none; border: none; cursor: pointer;
+    font-size: 18px; line-height: 1; color: inherit; opacity: .55;
+    padding: 0 var(--sp-1);
+}
+.alert__close:hover { opacity: 1; }
+
+.alert--success { background: var(--green-100); border-color: var(--green-600); color: #14624A; }
+.alert--error   { background: var(--red-100);   border-color: var(--red-600);   color: #8E2229; }
+.alert--warning { background: var(--amber-100); border-color: var(--marigold-500); color: var(--amber-600); }
+.alert--info    { background: var(--blue-100);  border-color: var(--blue-600);  color: #1E4478; }
+
+/* An empty screen is an invitation to act, so every empty state ends
+   in a button rather than a shrug. */
+.empty {
+    text-align: center;
+    padding: var(--sp-12) var(--sp-6);
+    color: var(--ink-500);
+}
+.empty__icon { font-size: 34px; margin-bottom: var(--sp-3); opacity: .45; }
+.empty h3 { color: var(--ink-700); margin-bottom: var(--sp-2); }
+.empty p { max-width: 42ch; margin: 0 auto var(--sp-5); }
+
+.modal {
+    position: fixed; inset: 0; z-index: 100;
+    background: rgba(15, 22, 32, .55);
+    display: grid; place-items: center;
+    padding: var(--sp-5);
+}
+.modal__box {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    width: 100%; max-width: 480px;
+    max-height: 90vh; overflow-y: auto;
+}
+.modal__head {
+    padding: var(--sp-5) var(--sp-5) var(--sp-3);
+    display: flex; align-items: center; justify-content: space-between; gap: var(--sp-4);
+}
+.modal__head h3 { margin: 0; }
+.modal__body { padding: 0 var(--sp-5) var(--sp-5); }
+.modal__foot {
+    padding: var(--sp-4) var(--sp-5);
+    border-top: 1px solid var(--line-soft);
+    display: flex; justify-content: flex-end; gap: var(--sp-2);
+    background: var(--paper);
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+}
+
+
+/* =====================================================================
+   12. PAGINATION
+   ===================================================================== */
+.pagination { display: flex; gap: var(--sp-1); align-items: center; justify-content: center; padding: var(--sp-4); }
+.pagination__link {
+    display: grid; place-items: center;
+    min-width: 34px; height: 34px; padding: 0 var(--sp-3);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    color: var(--ink-700); font-size: var(--text-sm);
+    background: var(--white);
+}
+.pagination__link:hover { background: var(--paper); text-decoration: none; }
+.pagination__link.is-active {
+    background: var(--indigo-800); border-color: var(--indigo-800); color: var(--white); font-weight: 600;
+}
+.pagination__link.is-disabled { opacity: .4; pointer-events: none; }
+
+
+/* =====================================================================
+   13. PUBLIC LANDING PAGE
+   ---------------------------------------------------------------------
+   The hero leads with the search itself rather than a slogan: finding a
+   professional is the page's single job, so the control that does it is
+   the first thing on screen.
+   ===================================================================== */
+.public-nav {
+    background: var(--white);
+    border-bottom: 1px solid var(--line);
+    position: sticky; top: 0; z-index: 50;
+}
+.public-nav__inner {
+    max-width: 1180px; margin: 0 auto;
+    padding: var(--sp-4) var(--sp-6);
+    display: flex; align-items: center; gap: var(--sp-5);
+}
+.public-nav__links { display: flex; gap: var(--sp-5); margin-left: auto; align-items: center; }
+.public-nav__links a { color: var(--ink-700); font-size: var(--text-base); font-weight: 500; }
+.public-nav__links a:hover { color: var(--indigo-800); }
+
+.brand { display: flex; align-items: center; gap: var(--sp-3); }
+.brand__mark {
+    width: 34px; height: 34px; flex: 0 0 34px;
+    border-radius: 8px;
+    background: var(--indigo-800); color: var(--marigold-500);
+    display: grid; place-items: center;
+    font-family: var(--font-display); font-weight: 700; font-size: 15px;
+}
+.brand__text { font-family: var(--font-display); font-weight: 700; font-size: var(--text-base); color: var(--ink-900); line-height: 1.2; }
+.brand__sub { font-size: 10px; color: var(--ink-500); font-family: var(--font-mono); letter-spacing: .08em; text-transform: uppercase; }
+
+.hero {
+    background: var(--indigo-800);
+    color: #C3CBDA;
+    padding: var(--sp-16) var(--sp-6);
+    position: relative; overflow: hidden;
+}
+.hero::before {
+    content: ''; position: absolute; inset: 0;
+    background-image:
+        linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+    background-size: 32px 32px;
+    pointer-events: none;
+}
+.hero__inner { max-width: 860px; margin: 0 auto; position: relative; text-align: center; }
+.hero h1 {
+    color: var(--white);
+    font-size: var(--text-3xl);
+    margin-bottom: var(--sp-3);
+    letter-spacing: -.025em;
+}
+.hero__lede { font-size: var(--text-md); max-width: 56ch; margin: 0 auto var(--sp-8); }
+
+.hero__search {
+    display: flex; gap: var(--sp-2);
+    background: var(--white);
+    padding: var(--sp-2);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    flex-wrap: wrap;
+}
+.hero__search .select, .hero__search .input {
+    border: none; flex: 1 1 180px; min-width: 0;
+}
+.hero__search .select:focus, .hero__search .input:focus { box-shadow: none; }
+.hero__search .btn { flex: 0 0 auto; }
+
+.hero__stats {
+    display: flex; gap: var(--sp-8); justify-content: center;
+    margin-top: var(--sp-8); flex-wrap: wrap;
+}
+.hero__stat { text-align: center; }
+.hero__stat b {
+    display: block;
+    font-family: var(--font-display); font-size: var(--text-xl);
+    color: var(--marigold-500); font-weight: 700;
+}
+.hero__stat span { font-size: var(--text-xs); font-family: var(--font-mono); letter-spacing: .08em; text-transform: uppercase; }
+
+.section { padding: var(--sp-16) var(--sp-6); }
+.section--paper { background: var(--paper); }
+.section__inner { max-width: 1180px; margin: 0 auto; }
+.section__head { text-align: center; margin-bottom: var(--sp-10); }
+.section__head p { color: var(--ink-500); max-width: 56ch; margin: 0 auto; }
+
+.cat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: var(--sp-4); }
+.cat-tile {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: var(--sp-5);
+    text-align: center;
+    color: var(--ink-700);
+    transition: transform .18s var(--ease), box-shadow .18s var(--ease), border-color .18s var(--ease);
+}
+.cat-tile:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--marigold-500);
+    text-decoration: none;
+}
+.cat-tile__icon { font-size: 28px; margin-bottom: var(--sp-2); }
+.cat-tile__name { font-weight: 600; color: var(--ink-900); display: block; margin-bottom: 2px; }
+.cat-tile__count { font-size: var(--text-xs); color: var(--ink-500); font-family: var(--font-mono); }
+
+/* Provider card used on the search results screen. */
+.provider-card {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: var(--sp-5);
+    display: flex; flex-direction: column; gap: var(--sp-3);
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow .18s var(--ease), border-color .18s var(--ease);
+}
+.provider-card:hover { box-shadow: var(--shadow-md); border-color: var(--ink-300); }
+.provider-card__head { display: flex; gap: var(--sp-3); align-items: center; }
+.provider-card__name { font-family: var(--font-display); font-weight: 600; font-size: var(--text-md); color: var(--ink-900); }
+.provider-card__cat { font-size: var(--text-xs); color: var(--marigold-600); font-family: var(--font-mono); letter-spacing: .06em; text-transform: uppercase; }
+.provider-card__facts { display: flex; gap: var(--sp-5); font-size: var(--text-sm); flex-wrap: wrap; }
+.provider-card__facts b { color: var(--ink-900); }
+.provider-card__foot { display: flex; align-items: center; gap: var(--sp-3); margin-top: auto; padding-top: var(--sp-3); border-top: 1px solid var(--line-soft); }
+.provider-card__rate { font-family: var(--font-display); font-size: var(--text-md); font-weight: 700; color: var(--ink-900); }
+.provider-card__rate small { font-weight: 400; font-size: var(--text-xs); color: var(--ink-500); }
+
+/* Steps -- genuinely a sequence, so the numbering carries meaning. */
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--sp-6); counter-reset: step; }
+.step { counter-increment: step; }
+.step::before {
+    content: counter(step, decimal-leading-zero);
+    display: block;
+    font-family: var(--font-mono);
+    font-size: var(--text-lg); font-weight: 600;
+    color: var(--marigold-500);
+    margin-bottom: var(--sp-2);
+}
+.step h4 { margin-bottom: var(--sp-1); }
+.step p { color: var(--ink-500); font-size: var(--text-sm); margin: 0; }
+
+.site-foot {
+    background: var(--indigo-900);
+    color: #8E99AD;
+    padding: var(--sp-10) var(--sp-6) var(--sp-6);
+    font-size: var(--text-sm);
+}
+.site-foot__inner { max-width: 1180px; margin: 0 auto; }
+.site-foot__cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--sp-8); margin-bottom: var(--sp-8); }
+.site-foot h4 { color: var(--white); font-size: var(--text-sm); margin-bottom: var(--sp-3); }
+.site-foot a { color: #8E99AD; display: block; margin-bottom: var(--sp-2); }
+.site-foot a:hover { color: var(--white); }
+.site-foot__bar {
+    border-top: 1px solid rgba(255,255,255,.09);
+    padding-top: var(--sp-5);
+    display: flex; justify-content: space-between; gap: var(--sp-4); flex-wrap: wrap;
+    font-size: var(--text-xs);
+}
+
+/* Filter bar on the search screen. */
+.filters {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: var(--sp-4) var(--sp-5);
+    margin-bottom: var(--sp-5);
+}
+.filters__row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: var(--sp-3); align-items: end; }
+
+/* Invoice sheet. */
+.invoice { background: var(--white); padding: var(--sp-8); max-width: 780px; margin: 0 auto; border: 1px solid var(--line); border-radius: var(--radius); }
+.invoice__head { display: flex; justify-content: space-between; gap: var(--sp-6); padding-bottom: var(--sp-5); border-bottom: 2px solid var(--indigo-800); margin-bottom: var(--sp-5); flex-wrap: wrap; }
+.invoice__title { font-family: var(--font-display); font-size: var(--text-2xl); font-weight: 700; color: var(--ink-900); margin: 0; }
+.invoice__parties { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--sp-6); margin-bottom: var(--sp-6); }
+.invoice__total { display: flex; justify-content: flex-end; gap: var(--sp-8); padding-top: var(--sp-4); border-top: 2px solid var(--indigo-800); font-family: var(--font-display); font-size: var(--text-lg); font-weight: 700; color: var(--ink-900); }
+
+
+/* =====================================================================
+   14. RESPONSIVE
+   ===================================================================== */
+@media (max-width: 960px) {
+    .auth { grid-template-columns: 1fr; }
+    .auth__aside { display: none; }
+}
+
+@media (max-width: 860px) {
+    .sidebar {
+        position: fixed; left: 0; top: 0; bottom: 0; z-index: 90;
+        transform: translateX(-100%);
+        transition: transform .22s var(--ease);
+        box-shadow: var(--shadow-lg);
+    }
+    .sidebar.is-open { transform: translateX(0); }
+    .topbar__toggle { display: grid; place-items: center; }
+    .content { padding: var(--sp-4); }
+    .hero { padding: var(--sp-12) var(--sp-5); }
+    .hero h1 { font-size: var(--text-2xl); }
+    .section { padding: var(--sp-12) var(--sp-5); }
+
+    /* Backdrop shown while the mobile sidebar is open. */
+    .sidebar-backdrop {
+        position: fixed; inset: 0; z-index: 80;
+        background: rgba(15, 22, 32, .5);
+    }
+}
+
+@media (max-width: 560px) {
+    .role-picker { grid-template-columns: 1fr; }
+    .page-head { flex-direction: column; align-items: flex-start; }
+    .jobcard__stub { flex-basis: 34px; }
+    .userchip__meta { display: none; }
+    .hero__search { flex-direction: column; }
+    .hero__search .btn { width: 100%; }
+}
+
+
+/* =====================================================================
+   15. PRINT
+   ---------------------------------------------------------------------
+   Invoices are printed by users, and every screen in this application
+   is screenshotted for the project report. Chrome removes background
+   colours when printing, so the rules below restore what matters and
+   drop the furniture that would only waste paper.
+   ===================================================================== */
+@media print {
+    .sidebar, .topbar, .btn, .pagination,
+    .site-foot, .public-nav, .no-print { display: none !important; }
+
+    body { background: var(--white); color: #000; font-size: 11pt; }
+    .content { padding: 0; }
+    .card, .invoice, .jobcard {
+        border: 1px solid #999;
+        box-shadow: none;
+        break-inside: avoid;
+    }
+    .table th { background: #EEE !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .badge, .visit-stamp__disc { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    a { color: #000; text-decoration: none; }
+}

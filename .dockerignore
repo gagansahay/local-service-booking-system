@@ -1,0 +1,12 @@
+.git
+.gitignore
+.env
+.env.*
+!.env.example
+*.md
+!README.md
+assets/uploads/*
+!assets/uploads/.gitkeep
+.vscode/
+.idea/
+*.log

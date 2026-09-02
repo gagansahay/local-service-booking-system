@@ -1,0 +1,99 @@
+# =====================================================================
+#  LOCAL SERVICE BOOKING & MANAGEMENT SYSTEM
+#  BCSP-064 -- Bachelor of Computer Applications, IGNOU
+# ---------------------------------------------------------------------
+#  Deployment stack: the PHP/Apache application plus its MySQL database.
+#
+#  Coolify reads this file directly. It can also be run locally with
+#  `docker compose up` if you want to test the deployed configuration
+#  before pushing it.
+#
+#  NOTE ON PASSWORDS
+#  -----------------
+#  No password is written in this file. Every secret is read from an
+#  environment variable, which Coolify supplies from its own encrypted
+#  store. Locally, copy .env.example to .env and fill it in -- .env is
+#  git-ignored, so it can never be committed by accident.
+# =====================================================================
+
+services:
+
+  # -------------------------------------------------------------------
+  # The web application
+  # -------------------------------------------------------------------
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      # Where to find the database. 'db' is the service name below --
+      # Docker's internal DNS resolves it to that container.
+      DB_HOST: db
+      DB_PORT: 3306
+
+      # Fixed, not configurable: database/lsbms_schema.sql contains
+      # "CREATE DATABASE lsbms_db", so pointing the app at a differently
+      # named database would connect it to one that has no tables.
+      DB_NAME: lsbms_db
+
+      DB_USER: ${MYSQL_USER:-lsbms}
+      DB_PASSWORD: ${MYSQL_PASSWORD:?MYSQL_PASSWORD must be set}
+
+      # Off in every deployment. Turning this on would print stack
+      # traces to visitors.
+      APP_DEBUG: "false"
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      # Coolify's reverse proxy maps a domain onto this port.
+      - "80"
+    volumes:
+      # Uploaded profile photos must survive a redeploy, so they live on
+      # a named volume rather than inside the container's own filesystem.
+      - lsbms_uploads:/var/www/html/assets/uploads
+
+  # -------------------------------------------------------------------
+  # The database
+  # -------------------------------------------------------------------
+  db:
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?MYSQL_ROOT_PASSWORD must be set}
+
+      # Must stay lsbms_db to match the schema script. Creating it here
+      # also means the grant below is issued against the right name.
+      MYSQL_DATABASE: lsbms_db
+
+      MYSQL_USER: ${MYSQL_USER:-lsbms}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:?MYSQL_PASSWORD must be set}
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    volumes:
+      # The database itself, kept across restarts and redeploys.
+      - lsbms_db_data:/var/lib/mysql
+
+      # MySQL runs every .sql file in this directory ONCE, the first time
+      # the data volume is created. Files run in alphabetical order, so
+      # lsbms_schema.sql lands before lsbms_seed.sql -- the tables exist
+      # before the demo rows are inserted.
+      #
+      # Because it only runs on an empty volume, a later redeploy will
+      # NOT wipe real data. To reseed deliberately, delete the volume.
+      - ./database/lsbms_schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+      - ./database/lsbms_seed.sql:/docker-entrypoint-initdb.d/02-seed.sql:ro
+    healthcheck:
+      # The app waits for this to pass before starting, so it never comes
+      # up pointing at a database that is not ready yet.
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+
+volumes:
+  lsbms_db_data:
+  lsbms_uploads:
