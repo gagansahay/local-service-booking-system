@@ -27,27 +27,37 @@ services:
       dockerfile: Dockerfile
     restart: unless-stopped
     environment:
+      # --- Coolify domain ---------------------------------------------
+      # Left deliberately EMPTY. Coolify recognises the pattern
+      # SERVICE_FQDN_<SERVICE>_<PORT> and fills it in with the domain you
+      # assign, then writes the reverse-proxy rules for you.
+      # Running plain `docker compose up` locally just sets an unused
+      # empty variable, so this line is harmless outside Coolify.
+      - SERVICE_FQDN_APP_80
+
       # Where to find the database. 'db' is the service name below --
       # Docker's internal DNS resolves it to that container.
-      DB_HOST: db
-      DB_PORT: 3306
+      - DB_HOST=db
+      - DB_PORT=3306
 
       # Fixed, not configurable: database/lsbms_schema.sql contains
       # "CREATE DATABASE lsbms_db", so pointing the app at a differently
       # named database would connect it to one that has no tables.
-      DB_NAME: lsbms_db
+      - DB_NAME=lsbms_db
 
-      DB_USER: ${MYSQL_USER:-lsbms}
-      DB_PASSWORD: ${MYSQL_PASSWORD:?MYSQL_PASSWORD must be set}
+      - DB_USER=${MYSQL_USER:-lsbms}
+      - DB_PASSWORD=${MYSQL_PASSWORD:?MYSQL_PASSWORD must be set}
 
       # Off in every deployment. Turning this on would print stack
       # traces to visitors.
-      APP_DEBUG: "false"
+      - APP_DEBUG=false
     depends_on:
       db:
         condition: service_healthy
-    ports:
-      # Coolify's reverse proxy maps a domain onto this port.
+    expose:
+      # Reachable on the internal Docker network only. Coolify's proxy
+      # terminates TLS and forwards to this port, so it never needs to
+      # be published on the host.
       - "80"
     volumes:
       # Uploaded profile photos must survive a redeploy, so they live on
