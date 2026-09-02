@@ -612,6 +612,12 @@ p { margin: 0 0 var(--sp-4); }
 .auth__points b { color: var(--white); display: block; font-weight: 600; }
 .auth__tick { color: var(--marigold-500); font-size: 15px; }
 
+/* The brand block is shared between the light public navbar and the
+   dark sign-in panel. Its muted grey reads at 2.6:1 against the indigo
+   there, so the dark surface gets the lighter tone used in the sidebar. */
+.auth__aside .brand__text { color: var(--white); }
+.auth__aside .brand__sub  { color: var(--sidebar-muted); }
+
 .auth__panel {
     display: flex; align-items: center; justify-content: center;
     padding: var(--sp-10) var(--sp-6);
