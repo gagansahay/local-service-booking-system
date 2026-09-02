@@ -222,7 +222,7 @@ $slotGrid = build_slot_grid(
 
 $pageTitle   = 'Book a service';
 $pageHeading = 'Book ' . $provider['full_name'];
-$pageLede    = $provider['category_name'] . ' &middot; ' . money($provider['hourly_rate']) . ' per hour';
+$pageLede    = $provider['category_name'] . ' · ' . money($provider['hourly_rate']) . ' per hour';
 
 include __DIR__ . '/../includes/header.php';
 ?>

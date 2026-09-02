@@ -103,7 +103,7 @@ $amcVisits = $stmt->fetchAll();
 
 $pageTitle   = 'Dashboard';
 $pageHeading = 'Hello, ' . explode(' ', current_name())[0];
-$pageLede    = $profile['category_name'] . ' &middot; ' . money($profile['hourly_rate']) . ' per hour';
+$pageLede    = $profile['category_name'] . ' · ' . money($profile['hourly_rate']) . ' per hour';
 
 include __DIR__ . '/../includes/header.php';
 ?>
@@ -266,7 +266,7 @@ include __DIR__ . '/../includes/header.php';
                         <div>
                             <strong style="color:var(--ink-900)"><?= e($v['customer_name']) ?></strong>
                             <div class="text-small text-muted">
-                                <?= e($v['plan_name']) ?> &middot; visit <?= (int) $v['visit_number'] ?>
+                                <?= e($v['plan_name']) ?> · visit <?= (int) $v['visit_number'] ?>
                             </div>
                         </div>
                         <div class="text-right">

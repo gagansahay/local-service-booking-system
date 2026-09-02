@@ -61,10 +61,26 @@
     --green-100: #E3F4EC;
     --red-600:   #C9333C;
     --red-100:   #FCEAEB;
-    --amber-600: #B5730B;
     --amber-100: #FDF1DA;
     --grey-600:  #5A6474;
     --grey-100:  #EDEFF3;
+
+    /* -- Accessible text tones ----------------------------------------
+       These four exist because the mid-tone brand colours are readable
+       as fills but not as small text on their own light tints. Each was
+       measured against the surface it is actually used on and lands at
+       or above the WCAG AA threshold: 4.5:1 for text, 3:1 for the
+       rating stars, which are a graphical indicator rather than prose.
+
+         --amber-600     on --amber-100    5.5:1   (was 3.5:1)
+         --green-700     on --green-100    5.7:1   (was 3.8:1)
+         --sidebar-muted on --indigo-800   6.5:1   (was 3.6:1)
+         --star          on white          3.2:1   (was 2.1:1)
+       ------------------------------------------------------------- */
+    --amber-600:     #8A5600;
+    --green-700:     #176B49;
+    --sidebar-muted: #9AA8BF;
+    --star:          #C97F00;
 
     /* -- Neutrals ----------------------------------------------------- */
     --ink-900: #0F1620;
@@ -197,7 +213,7 @@ p { margin: 0 0 var(--sp-4); }
     font-weight: 500;
     letter-spacing: .11em;
     text-transform: uppercase;
-    color: var(--marigold-600);
+    color: var(--amber-600);
     margin: 0 0 var(--sp-2);
 }
 
@@ -275,7 +291,7 @@ p { margin: 0 0 var(--sp-4); }
 .sidebar__group {
     font-family: var(--font-mono);
     font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
-    color: #6D7A92;
+    color: var(--sidebar-muted);
     padding: var(--sp-4) var(--sp-3) var(--sp-2);
 }
 .sidebar__group:first-child { padding-top: 0; }
@@ -318,7 +334,7 @@ p { margin: 0 0 var(--sp-4); }
     padding: var(--sp-4) var(--sp-5);
     border-top: 1px solid rgba(255, 255, 255, .09);
     font-size: var(--text-xs);
-    color: #6D7A92;
+    color: var(--sidebar-muted);
     line-height: 1.5;
 }
 
@@ -732,16 +748,16 @@ p { margin: 0 0 var(--sp-4); }
 }
 .badge--pending,   .badge--due       { background: var(--amber-100); color: var(--amber-600); border-color: #E9C88A; }
 .badge--confirmed, .badge--scheduled { background: var(--blue-100);  color: var(--blue-600);  border-color: #AEC8EC; }
-.badge--in_progress                  { background: var(--marigold-200); color: var(--marigold-600); border-color: #E7BE72; }
+.badge--in_progress                  { background: var(--marigold-200); color: var(--amber-600); border-color: #E7BE72; }
 .badge--completed, .badge--active,
-.badge--verified,  .badge--paid      { background: var(--green-100); color: var(--green-600); border-color: #9FD4BC; }
+.badge--verified,  .badge--paid      { background: var(--green-100); color: var(--green-700); border-color: #9FD4BC; }
 .badge--cancelled, .badge--rejected,
 .badge--suspended, .badge--missed    { background: var(--red-100);   color: var(--red-600);   border-color: #EDAFB3; }
 .badge--expired,   .badge--refunded  { background: var(--grey-100);  color: var(--grey-600);  border-color: var(--ink-300); }
 
 .rating { display: inline-flex; align-items: center; gap: 1px; }
 .star { font-size: 13px; line-height: 1; }
-.star--full, .star--half { color: var(--marigold-500); }
+.star--full, .star--half { color: var(--star); }
 .star--empty { color: var(--ink-300); }
 .rating__count { margin-left: var(--sp-2); font-size: var(--text-xs); color: var(--ink-500); }
 .rating__count--none { font-style: italic; }
@@ -830,7 +846,7 @@ p { margin: 0 0 var(--sp-4); }
 .jobcard__facts dt {
     font-family: var(--font-mono);
     font-size: 10px; letter-spacing: .08em; text-transform: uppercase;
-    color: var(--ink-400); margin-bottom: 2px;
+    color: var(--ink-500); margin-bottom: 2px;
 }
 .jobcard__facts dd { margin: 0; font-size: var(--text-sm); color: var(--ink-900); font-weight: 500; }
 
@@ -877,13 +893,13 @@ p { margin: 0 0 var(--sp-4); }
 .visit-stamp--completed .visit-stamp__disc {
     background: var(--green-600); border-color: var(--green-600); color: var(--white);
 }
-.visit-stamp--completed .visit-stamp__label { color: var(--green-600); font-weight: 600; }
+.visit-stamp--completed .visit-stamp__label { color: var(--green-700); font-weight: 600; }
 
 .visit-stamp--due .visit-stamp__disc {
     background: var(--marigold-500); border-color: var(--marigold-600); color: var(--indigo-900);
     box-shadow: 0 0 0 4px var(--marigold-100);
 }
-.visit-stamp--due .visit-stamp__label { color: var(--marigold-600); font-weight: 600; }
+.visit-stamp--due .visit-stamp__label { color: var(--amber-600); font-weight: 600; }
 
 .visit-stamp--missed .visit-stamp__disc {
     background: var(--red-100); border-color: var(--red-600); color: var(--red-600);
@@ -1103,7 +1119,7 @@ p { margin: 0 0 var(--sp-4); }
 .provider-card:hover { box-shadow: var(--shadow-md); border-color: var(--ink-300); }
 .provider-card__head { display: flex; gap: var(--sp-3); align-items: center; }
 .provider-card__name { font-family: var(--font-display); font-weight: 600; font-size: var(--text-md); color: var(--ink-900); }
-.provider-card__cat { font-size: var(--text-xs); color: var(--marigold-600); font-family: var(--font-mono); letter-spacing: .06em; text-transform: uppercase; }
+.provider-card__cat { font-size: var(--text-xs); color: var(--amber-600); font-family: var(--font-mono); letter-spacing: .06em; text-transform: uppercase; }
 .provider-card__facts { display: flex; gap: var(--sp-5); font-size: var(--text-sm); flex-wrap: wrap; }
 .provider-card__facts b { color: var(--ink-900); }
 .provider-card__foot { display: flex; align-items: center; gap: var(--sp-3); margin-top: auto; padding-top: var(--sp-3); border-top: 1px solid var(--line-soft); }
