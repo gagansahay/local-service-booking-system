@@ -48,7 +48,7 @@
     --blue-500:   #3A6FC4;
     --blue-100:   #E4EDF9;
 
-    --marigold-600: #C97F00;
+    --marigold-600: #A66600;
     --marigold-500: #F0A202;
     --marigold-200: #FDEAC2;
     --marigold-100: #FEF6E6;
@@ -80,7 +80,7 @@
     --amber-600:     #8A5600;
     --green-700:     #176B49;
     --sidebar-muted: #9AA8BF;
-    --star:          #C97F00;
+    --star:          #A66600;
 
     /* -- Neutrals ----------------------------------------------------- */
     --ink-900: #0F1620;
@@ -394,8 +394,8 @@ p { margin: 0 0 var(--sp-4); }
 .bell__dot {
     position: absolute; top: -5px; right: -5px;
     background: var(--red-600); color: var(--white);
-    font-size: 10px; font-weight: 700;
-    min-width: 17px; height: 17px; padding: 0 4px;
+    font-size: 11px; font-weight: 700;
+    min-width: 18px; height: 18px; padding: 0 4px;
     border-radius: 9px; display: grid; place-items: center;
     border: 2px solid var(--white);
 }
@@ -642,9 +642,14 @@ p { margin: 0 0 var(--sp-4); }
 .demo-keys td:first-child { color: var(--ink-500); text-transform: capitalize; }
 .demo-keys code { font-family: var(--font-mono); color: var(--ink-900); }
 .demo-fill {
-    background: none; border: none; padding: 0;
+    background: none; border: none;
     color: var(--blue-600); cursor: pointer;
     font-size: var(--text-xs); font-family: inherit; text-decoration: underline;
+    /* WCAG 2.2 SC 2.5.8 exempts links sitting inside a sentence, but this
+       is a standalone control in a table cell, so it has to carry its own
+       24px target. The padding is what supplies the height; the negative
+       margin keeps the row from growing. */
+    padding: 4px 6px; margin: -4px -6px; min-height: 24px;
 }
 
 
@@ -675,6 +680,17 @@ p { margin: 0 0 var(--sp-4); }
 }
 
 .grid { display: grid; gap: var(--sp-5); }
+
+/* A grid track sized 1fr is really minmax(auto, 1fr), and that automatic
+   minimum resolves to the item's MIN-CONTENT width -- not to zero. So a
+   wide table sitting in a card inside a grid cell stretches its own track
+   until the whole row fits, and .table-wrap's overflow-x:auto never gets
+   the chance to scroll. The page then scrolls sideways instead, which on
+   a phone makes the browser zoom out and shrink every control.
+
+   Resetting the minimum lets the track stay narrow and hands the
+   overflow back to .table-wrap, where it belongs. */
+.grid > * { min-width: 0; }
 .grid--2 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
 
 /* A wide main column beside a narrower rail.
@@ -1050,7 +1066,11 @@ p { margin: 0 0 var(--sp-4); }
    `.btn--primary` class (0,0,1,0), so without this exclusion the nav
    colour wins and paints the button's label dark-on-dark -- a 1.29:1
    contrast ratio, i.e. invisible. Buttons keep their own colour. */
-.public-nav__links a:not(.btn) { color: var(--ink-700); font-size: var(--text-base); font-weight: 500; }
+.public-nav__links a:not(.btn) {
+    color: var(--ink-700); font-size: var(--text-base); font-weight: 500;
+    /* Standalone navigation, so it needs the full 24px target. */
+    display: inline-flex; align-items: center; min-height: 24px;
+}
 .public-nav__links a:not(.btn):hover { color: var(--indigo-800); }
 
 .brand { display: flex; align-items: center; gap: var(--sp-3); }
@@ -1184,7 +1204,12 @@ p { margin: 0 0 var(--sp-4); }
 .site-foot h4 { color: var(--white); font-size: var(--text-sm); margin-bottom: var(--sp-3); }
 /* Same exclusion as the nav above: any button placed in the footer
    must keep its own colour rather than inherit the muted link tone. */
-.site-foot a:not(.btn) { color: #8E99AD; display: block; margin-bottom: var(--sp-2); }
+.site-foot a:not(.btn) {
+    color: #8E99AD; display: flex; align-items: center;
+    /* A standalone link list, so SC 2.5.8's in-a-sentence exemption does
+       not cover these -- they carry their own 24px target. */
+    min-height: 24px; margin-bottom: var(--sp-2);
+}
 .site-foot a:not(.btn):hover { color: var(--white); }
 .site-foot__bar {
     border-top: 1px solid rgba(255,255,255,.09);

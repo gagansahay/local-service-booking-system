@@ -79,7 +79,7 @@ $recentNotifications = $notifStmt->fetchAll();
                         aria-label="Notifications<?= $unreadCount > 0 ? ' (' . $unreadCount . ' unread)' : '' ?>">
                     &#128276;
                     <?php if ($unreadCount > 0): ?>
-                        <span class="bell__dot"><?= $unreadCount > 9 ? '9+' : (int) $unreadCount ?></span>
+                        <span class="bell__dot" aria-hidden="true"><?= $unreadCount > 9 ? '9+' : (int) $unreadCount ?></span>
                     <?php endif; ?>
                 </button>
 
