@@ -220,6 +220,12 @@ p { margin: 0 0 var(--sp-4); }
 /* Reference numbers -- booking codes, contract codes, invoice numbers.
    Monospace because these are read aloud, compared character by
    character and quoted over the phone. */
+/* A .ref placed inside a button must take the button's text colour.
+   Without this it keeps its own dark ink while the button's dark
+   background shows through, which is the count pill on the filter
+   tabs rendering at 1.29:1. */
+.btn .ref { color: inherit; background: transparent; padding: 0 0 0 4px; }
+
 .ref {
     font-family: var(--font-mono);
     font-size: var(--text-sm);
@@ -464,7 +470,7 @@ p { margin: 0 0 var(--sp-4); }
 }
 .btn--outline:hover { background: var(--paper); border-color: var(--ink-300); }
 
-.btn--success { background: var(--green-600); color: var(--white); }
+.btn--success { background: var(--green-700); color: var(--white); }   /* 6.5:1 */
 .btn--success:hover { filter: brightness(1.08); }
 
 .btn--danger { background: var(--red-600); color: var(--white); }
@@ -758,7 +764,7 @@ p { margin: 0 0 var(--sp-4); }
 .rating { display: inline-flex; align-items: center; gap: 1px; }
 .star { font-size: 13px; line-height: 1; }
 .star--full, .star--half { color: var(--star); }
-.star--empty { color: var(--ink-300); }
+.star--empty { color: var(--ink-400); }        /* 3.8:1, was 2.0:1 */
 .rating__count { margin-left: var(--sp-2); font-size: var(--text-xs); color: var(--ink-500); }
 .rating__count--none { font-style: italic; }
 
@@ -819,8 +825,8 @@ p { margin: 0 0 var(--sp-4); }
 }
 .jobcard__stub--pending     { background: var(--amber-600); }
 .jobcard__stub--confirmed   { background: var(--blue-600); }
-.jobcard__stub--in_progress { background: var(--marigold-600); }
-.jobcard__stub--completed   { background: var(--green-600); }
+.jobcard__stub--in_progress { background: var(--amber-600); }   /* 6.2:1 with white */
+.jobcard__stub--completed   { background: var(--green-700); }  /* 6.5:1 with white */
 .jobcard__stub--cancelled,
 .jobcard__stub--rejected    { background: var(--grey-600); }
 
@@ -882,7 +888,7 @@ p { margin: 0 0 var(--sp-4); }
     font-size: var(--text-sm); font-weight: 600;
     background: var(--white);
     border: 2px solid var(--line);
-    color: var(--ink-400);
+    color: var(--ink-500);        /* 6.0:1, was 3.8:1 */
     position: relative; z-index: 1;
 }
 .visit-stamp__label {
@@ -891,7 +897,7 @@ p { margin: 0 0 var(--sp-4); }
 }
 
 .visit-stamp--completed .visit-stamp__disc {
-    background: var(--green-600); border-color: var(--green-600); color: var(--white);
+    background: var(--green-700); border-color: var(--green-700); color: var(--white);
 }
 .visit-stamp--completed .visit-stamp__label { color: var(--green-700); font-weight: 600; }
 

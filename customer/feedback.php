@@ -178,7 +178,7 @@ include __DIR__ . '/../includes/header.php';
                     <?php for ($i = 1; $i <= 5; $i++): ?>
                         <button type="button"
                                 style="background:none;border:none;font-size:34px;cursor:pointer;
-                                       color:var(--marigold-500);line-height:1;padding:0 2px"
+                                       color:var(--star);line-height:1;padding:0 2px"
                                 aria-label="<?= $i ?> star<?= $i > 1 ? 's' : '' ?>">
                             <?= $rating >= $i ? '&#9733;' : '&#9734;' ?>
                         </button>
