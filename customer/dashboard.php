@@ -144,7 +144,7 @@ include __DIR__ . '/../includes/header.php';
     </div>
 <?php endif; ?>
 
-<div class="grid grid--2" style="align-items:start">
+<div class="grid grid--2 u-items-start">
 
     <!-- ---------------- Upcoming bookings ------------------------- -->
     <section>

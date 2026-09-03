@@ -79,12 +79,7 @@ $pageLede    = 'Move each job through the workflow as the work progresses.';
 include __DIR__ . '/../includes/header.php';
 ?>
 
-<div class="btn-row u-mb-5">
-    <?php foreach ($tabs as $key => $label): ?>
-        <a class="btn <?= $filter === $key ? 'btn--primary' : 'btn--outline' ?> btn--sm"
-           href="jobs.php?status=<?= e($key) ?>"><?= e($label) ?></a>
-    <?php endforeach; ?>
-</div>
+<?= filter_tabs('jobs.php', $tabs, $filter) ?>
 
 <?php if (!$jobs): ?>
     <div class="card">

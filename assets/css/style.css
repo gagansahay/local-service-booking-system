@@ -1342,6 +1342,23 @@ p { margin: 0 0 var(--sp-4); }
 .stat__value--sm { font-size: var(--text-xl); }
 
 
+/* A filter row with something pushed to its far end -- tabs on the left,
+   a search box on the right. Two admin screens wrote this inline. */
+.toolbar {
+    display: flex; gap: var(--sp-3); flex-wrap: wrap; align-items: center;
+    margin-bottom: var(--sp-5);
+}
+.toolbar__end { display: flex; gap: var(--sp-2); margin-left: auto; }
+
+/* The caption above a meter: a name on the left, its value on the right. */
+.meter-label {
+    display: flex; justify-content: space-between;
+    font-size: var(--text-sm); margin-bottom: 4px;
+}
+
+.u-items-start { align-items: start; }
+
+
 /* =====================================================================
    17. MOBILE ERGONOMICS
    ---------------------------------------------------------------------

@@ -164,17 +164,7 @@ include __DIR__ . '/../includes/header.php';
     </div>
 </form>
 
-<div class="btn-row u-mb-5">
-    <?php foreach ($tabs as $key => $label): ?>
-        <a class="btn <?= $filter === $key ? 'btn--primary' : 'btn--outline' ?> btn--sm"
-           href="bookings.php?status=<?= e($key) ?>">
-            <?= e($label) ?>
-            <?php if (!empty($counts[$key])): ?>
-                <span class="ref" style="background:none;padding:0 0 0 4px"><?= (int) $counts[$key] ?></span>
-            <?php endif; ?>
-        </a>
-    <?php endforeach; ?>
-</div>
+<?= filter_tabs('bookings.php', $tabs, $filter, $counts) ?>
 
 <!-- ==================== TABLE ==================================== -->
 <?php if (!$bookings): ?>

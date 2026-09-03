@@ -202,20 +202,14 @@ include __DIR__ . '/../includes/header.php';
 ?>
 
 <!-- ==================== STATUS TABS ============================== -->
-<div class="btn-row u-mb-5">
-    <?php foreach ($tabs as $key => $label): ?>
-        <?php
-        $n = $key === 'cancelled'
-            ? (($counts['cancelled'] ?? 0) + ($counts['rejected'] ?? 0))
-            : ($counts[$key] ?? 0);
-        ?>
-        <a class="btn <?= $filter === $key ? 'btn--primary' : 'btn--outline' ?> btn--sm"
-           href="my-bookings.php?status=<?= e($key) ?>">
-            <?= e($label) ?>
-            <?php if ($n > 0): ?><span class="ref" style="background:none;padding:0 0 0 4px"><?= $n ?></span><?php endif; ?>
-        </a>
-    <?php endforeach; ?>
-</div>
+<?php
+// The "Cancelled" tab covers both cancellations and refusals, so its
+// count is the sum of the two. Worked out here rather than inside
+// filter_tabs(), which holds no opinion about what a status means.
+$tabCounts = $counts;
+$tabCounts['cancelled'] = ($counts['cancelled'] ?? 0) + ($counts['rejected'] ?? 0);
+?>
+<?= filter_tabs('my-bookings.php', $tabs, $filter, $tabCounts) ?>
 
 <!-- ==================== BOOKINGS ================================= -->
 <?php if (!$bookings): ?>

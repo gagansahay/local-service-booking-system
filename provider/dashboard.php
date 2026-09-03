@@ -150,7 +150,7 @@ include __DIR__ . '/../includes/header.php';
     </div>
 </div>
 
-<div class="grid grid--2" style="align-items:start">
+<div class="grid grid--2 u-items-start">
 
     <div>
         <!-- ------------- Today ---------------------------------- -->

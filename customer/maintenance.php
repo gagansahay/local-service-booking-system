@@ -416,7 +416,7 @@ include __DIR__ . '/../includes/header.php';
 
                 <!-- Raise the booking for a due visit ---------------- -->
                 <?php if ($dueVisit): ?>
-                    <div class="alert alert--warning" style="display:block">
+                    <div class="alert alert--warning u-block">
                         <strong>Visit <?= (int) $dueVisit['visit_number'] ?> is due.</strong>
                         <p class="text-small" style="margin:var(--sp-1) 0 var(--sp-3)">
                             It was scheduled for <?= e(show_date($dueVisit['scheduled_date'])) ?>.

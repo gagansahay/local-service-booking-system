@@ -188,20 +188,10 @@ include __DIR__ . '/../includes/header.php';
 ?>
 
 <!-- ==================== FILTERS ================================== -->
-<div style="display:flex;gap:var(--sp-3);flex-wrap:wrap;align-items:center;margin-bottom:var(--sp-5)">
-    <div class="btn-row">
-        <?php foreach ($tabs as $key => $label): ?>
-            <a class="btn <?= $filter === $key ? 'btn--primary' : 'btn--outline' ?> btn--sm"
-               href="providers.php?status=<?= e($key) ?>">
-                <?= e($label) ?>
-                <?php if (!empty($counts[$key])): ?>
-                    <span class="ref" style="background:none;padding:0 0 0 4px"><?= (int) $counts[$key] ?></span>
-                <?php endif; ?>
-            </a>
-        <?php endforeach; ?>
-    </div>
+<div class="toolbar">
+    <?= filter_tabs('providers.php', $tabs, $filter, $counts, 'btn-row') ?>
 
-    <form method="get" action="providers.php" style="display:flex;gap:var(--sp-2);margin-left:auto">
+    <form method="get" action="providers.php" class="toolbar__end">
         <input type="hidden" name="status" value="<?= e($filter) ?>">
         <input class="input" type="search" name="q" value="<?= e($keyword) ?>"
                placeholder="Name, email or city" style="max-width:240px">

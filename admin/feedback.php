@@ -158,12 +158,7 @@ include __DIR__ . '/../includes/header.php';
 <div class="grid grid--2 grid--rail">
 
     <div>
-        <div class="btn-row u-mb-4">
-            <?php foreach ($tabs as $key => $label): ?>
-                <a class="btn <?= $filter === $key ? 'btn--primary' : 'btn--outline' ?> btn--sm"
-                   href="feedback.php?status=<?= e($key) ?>"><?= e($label) ?></a>
-            <?php endforeach; ?>
-        </div>
+        <?= filter_tabs('feedback.php', $tabs, $filter, [], 'btn-row u-mb-4') ?>
 
         <?php if (!$reviews): ?>
             <div class="card">

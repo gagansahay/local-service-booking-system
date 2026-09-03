@@ -154,7 +154,7 @@ include __DIR__ . '/../includes/header.php';
     </div>
 </div>
 
-<div class="grid grid--2" style="align-items:start">
+<div class="grid grid--2 u-items-start">
 
     <div>
         <!-- ------------- Pending verifications ------------------- -->
@@ -248,7 +248,7 @@ include __DIR__ . '/../includes/header.php';
                 <?php foreach ($categoryPerformance as $c): ?>
                     <?php $pct = $peakBookings > 0 ? round((int) $c['total_bookings'] / $peakBookings * 100) : 0; ?>
                     <div class="u-mb-4">
-                        <div style="display:flex;justify-content:space-between;font-size:var(--text-sm);margin-bottom:4px">
+                        <div class="meter-label">
                             <span class="table__primary"><?= e($c['category_name']) ?></span>
                             <span class="text-muted">
                                 <?= (int) $c['total_bookings'] ?> bookings

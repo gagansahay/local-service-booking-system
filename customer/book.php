@@ -375,7 +375,7 @@ include __DIR__ . '/../includes/header.php';
             </div>
         </section>
 
-        <section class="alert alert--info" style="display:block">
+        <section class="alert alert--info u-block">
             <strong>How the price works</strong>
             <p class="text-small" style="margin:var(--sp-2) 0 0">
                 The figure shown is an estimate. The professional confirms the final amount when

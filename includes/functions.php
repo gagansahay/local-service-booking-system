@@ -1160,6 +1160,44 @@ function nav_active(string $file): string
 }
 
 /**
+ * Render a row of status filter tabs.
+ *
+ * Six listing screens each carried their own copy of this loop. They had
+ * begun to differ in small ways -- some showed a count beside the label
+ * and some did not, and the count carried an inline style that the
+ * `.btn .ref` rule had already made redundant.
+ *
+ * Callers that need a derived count (my-bookings folds 'rejected' into
+ * 'cancelled') work it out before calling, so this stays a presentation
+ * helper and keeps no opinion about what a status means.
+ *
+ * @param  string $script     Target page, e.g. 'bookings.php'
+ * @param  array  $tabs       key => visible label
+ * @param  string $active     Currently selected key
+ * @param  array  $counts     Optional key => count
+ * @param  string $wrapClass  Classes for the surrounding row
+ * @return string
+ */
+function filter_tabs(string $script, array $tabs, string $active, array $counts = [], string $wrapClass = 'btn-row u-mb-5'): string
+{
+    $html = '<div class="' . e($wrapClass) . '">';
+
+    foreach ($tabs as $key => $label) {
+        $key     = (string) $key;
+        $variant = $active === $key ? 'btn--primary' : 'btn--outline';
+        $count   = (int) ($counts[$key] ?? 0);
+
+        $html .= '<a class="btn ' . $variant . ' btn--sm"'
+               . ' href="' . e($script) . '?status=' . urlencode($key) . '">'
+               . e($label)
+               . ($count > 0 ? '<span class="ref">' . $count . '</span>' : '')
+               . '</a>';
+    }
+
+    return $html . '</div>';
+}
+
+/**
  * Work out which slice of a result set the current page should show.
  *
  * Six screens previously repeated this same six-line calculation, and it

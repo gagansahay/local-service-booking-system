@@ -218,7 +218,7 @@ include __DIR__ . '/../includes/header.php';
     </form>
 
     <div>
-        <section class="alert alert--info" style="display:block">
+        <section class="alert alert--info u-block">
             <strong>How this is used</strong>
             <p class="text-small" style="margin:var(--sp-2) 0 0">
                 When a customer picks a date, the system reads these hours and offers only the
