@@ -680,6 +680,39 @@ function can_transition(string $role, string $from, string $to): bool
  * @param  string $frequency
  * @return int
  */
+/**
+ * Add whole months to a date, clamping to the end of the target month.
+ *
+ * PHP's "+1 month" adds to the month number and then lets the day
+ * overflow, so 31 January becomes 3 March rather than 28 February. For an
+ * annual maintenance contract that is not a rounding detail: a contract
+ * starting on 31 August produced quarterly visits on 31 Aug, 1 Dec, 3 Mar
+ * and 31 May -- dates that wander further from the anniversary each time,
+ * and that a customer would reasonably query.
+ *
+ * Anchoring on the first of the month before adding avoids the overflow;
+ * the day is then put back, clamped to however many days the target month
+ * actually has. 31 Aug + 3 months becomes 30 November.
+ *
+ * @param  string $date    Y-m-d
+ * @param  int    $months  Whole months to add (may be negative)
+ * @return string          Y-m-d
+ */
+function add_months(string $date, int $months): string
+{
+    $start = new DateTime($date);
+    $day   = (int) $start->format('j');
+
+    $target = (new DateTime($start->format('Y-m-01')))->modify($months . ' months');
+    $target->setDate(
+        (int) $target->format('Y'),
+        (int) $target->format('n'),
+        min($day, (int) $target->format('t'))   // 't' = days in that month
+    );
+
+    return $target->format('Y-m-d');
+}
+
 function frequency_months(string $frequency): int
 {
     return [
@@ -737,12 +770,11 @@ function generate_maintenance_visits(
 
     for ($i = 1; $i <= $totalVisits; $i++) {
         // Visit 1 falls on the start date, visit 2 one interval later,
-        // and so on. Using a fresh DateTime each iteration avoids the
-        // month-end drift that repeated "+3 months" on one object
-        // produces (31 Jan +1 month lands on 3 Mar).
-        $date = (new DateTime($startDate))
-            ->modify('+' . ($months * ($i - 1)) . ' months')
-            ->format('Y-m-d');
+        // and so on. Every date is measured from the start rather than
+        // from the previous visit, so no drift accumulates, and
+        // add_months() clamps to the month end so a contract starting on
+        // the 31st does not wander into the following month.
+        $date = add_months($startDate, $months * ($i - 1));
 
         if ($firstVisit === null) {
             $firstVisit = $date;

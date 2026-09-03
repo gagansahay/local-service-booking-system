@@ -87,9 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && post('action') === 'subscribe') {
         $pdo->beginTransaction();
 
         $code    = next_contract_code($pdo);
-        $endDate = (new DateTime($startDate))
-            ->modify('+' . (int) $plan['duration_months'] . ' months')
-            ->format('Y-m-d');
+        $endDate = add_months($startDate, (int) $plan['duration_months']);
 
         $stmt = $pdo->prepare(
             'INSERT INTO maintenance_contracts
