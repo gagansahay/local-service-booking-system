@@ -110,20 +110,16 @@ $suspiciousIps = $pdo->query(
 /* -- The log itself, paginated ---------------------------------------- */
 $baseSql = "FROM activity_log a LEFT JOIN users u ON u.user_id = a.user_id $whereSql";
 
-$countStmt = $pdo->prepare("SELECT COUNT(*) $baseSql");
-$countStmt->execute($params);
-$totalRows  = (int) $countStmt->fetchColumn();
-$perPage    = 25;
-$totalPages = (int) ceil($totalRows / $perPage);
-$page       = max(1, get_int('page', 1));
-$page       = $totalPages > 0 ? min($page, $totalPages) : 1;
-$offset     = ($page - 1) * $perPage;
+$window     = page_window($pdo, "SELECT COUNT(*) $baseSql", $params, 25);
+$page       = $window['page'];
+$totalPages = $window['total_pages'];
+$totalRows  = $window['total_rows'];
 
 $stmt = $pdo->prepare(
     "SELECT a.*, u.full_name, u.role
      $baseSql
      ORDER BY a.created_at DESC, a.log_id DESC
-     LIMIT " . (int) $perPage . " OFFSET " . (int) $offset
+     " . $window['limit_sql']
 );
 $stmt->execute($params);
 $entries = $stmt->fetchAll();

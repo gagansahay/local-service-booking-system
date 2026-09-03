@@ -101,13 +101,10 @@ foreach ($pdo->query(
     $counts['all'] += (int) $row['n'];
 }
 
-$page       = max(1, get_int('page', 1));
-$countStmt  = $pdo->prepare("SELECT COUNT(*) FROM users u $whereSql");
-$countStmt->execute($params);
-$totalRows  = (int) $countStmt->fetchColumn();
-$totalPages = (int) ceil($totalRows / RECORDS_PER_PAGE);
-$page       = $totalPages > 0 ? min($page, $totalPages) : 1;
-$offset     = ($page - 1) * RECORDS_PER_PAGE;
+$window     = page_window($pdo, "SELECT COUNT(*) FROM users u $whereSql", $params);
+$page       = $window['page'];
+$totalPages = $window['total_pages'];
+$totalRows  = $window['total_rows'];
 
 $sql = "SELECT u.*,
                (SELECT COUNT(*) FROM bookings b WHERE b.user_id = u.user_id) AS bookings,
@@ -121,7 +118,7 @@ $sql = "SELECT u.*,
           FROM users u
           $whereSql
          ORDER BY u.created_at DESC
-         LIMIT " . (int) RECORDS_PER_PAGE . " OFFSET " . (int) $offset;
+         " . $window['limit_sql'];
 
 $stmt = $pdo->prepare($sql);
 $stmt->execute($params);

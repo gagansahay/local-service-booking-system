@@ -133,12 +133,7 @@ include __DIR__ . '/../includes/header.php';
 
 <div class="content--narrow">
 
-    <?php if (isset($errors['form'])): ?>
-        <div class="alert alert--error" role="alert">
-            <span class="alert__icon">&#10006;</span>
-            <span class="alert__text"><?= e($errors['form']) ?></span>
-        </div>
-    <?php endif; ?>
+    <?= form_error($errors) ?>
 
     <section class="card">
         <div class="card__body">

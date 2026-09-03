@@ -320,6 +320,30 @@ function render_flashes(): string
 }
 
 /**
+ * Render the form-level error banner, if the handler recorded one.
+ *
+ * Six screens carried this same five-line block of markup. A flash
+ * message survives a redirect; this one does not, because it belongs to
+ * a submission that failed validation and is being redisplayed with the
+ * user's input still in the fields.
+ *
+ * @param  array  $errors  The page's validation errors
+ * @param  string $key     Which key holds the form-level message
+ * @return string
+ */
+function form_error(array $errors, string $key = 'form'): string
+{
+    if (empty($errors[$key])) {
+        return '';
+    }
+
+    return '<div class="alert alert--error" role="alert">'
+         . '<span class="alert__icon">&#10006;</span>'
+         . '<span class="alert__text">' . e($errors[$key]) . '</span>'
+         . '</div>';
+}
+
+/**
  * Issue an HTTP redirect relative to the application root and stop.
  *
  * @param  string $path
@@ -1133,6 +1157,54 @@ function excerpt(?string $text, int $limit = 60): string
 function nav_active(string $file): string
 {
     return basename($_SERVER['SCRIPT_NAME'] ?? '') === $file ? ' is-active' : '';
+}
+
+/**
+ * Work out which slice of a result set the current page should show.
+ *
+ * Six screens previously repeated this same six-line calculation, and it
+ * had already drifted: the activity log divided by a hard-coded 25 while
+ * every other screen used RECORDS_PER_PAGE, so the two disagreed about
+ * how long a page was.
+ *
+ * The returned `limit_sql` matters more than it looks. MySQL will not
+ * accept LIMIT and OFFSET as bound parameters when emulation is off, so
+ * every caller had to interpolate them into the SQL by hand. Doing that
+ * in six places meant six chances to forget the integer cast. Here the
+ * cast happens once, on values that are themselves derived from
+ * get_int(), so the clause cannot carry anything but digits.
+ *
+ * @param  PDO    $pdo
+ * @param  string $countSql  A COUNT(*) query using the same WHERE clause
+ * @param  array  $params    Bindings for that query
+ * @param  int    $perPage   Rows per page
+ * @return array{page:int,total_pages:int,total_rows:int,offset:int,per_page:int,limit_sql:string}
+ */
+function page_window(PDO $pdo, string $countSql, array $params = [], int $perPage = RECORDS_PER_PAGE): array
+{
+    $perPage = max(1, $perPage);
+
+    $stmt = $pdo->prepare($countSql);
+    $stmt->execute($params);
+    $totalRows = (int) $stmt->fetchColumn();
+
+    $totalPages = (int) ceil($totalRows / $perPage);
+
+    // Clamp the requested page into the range that actually exists, so
+    // ?page=9999 shows the last page rather than an empty table, and
+    // ?page=-3 cannot produce a negative OFFSET.
+    $page   = max(1, get_int('page', 1));
+    $page   = $totalPages > 0 ? min($page, $totalPages) : 1;
+    $offset = ($page - 1) * $perPage;
+
+    return [
+        'page'        => $page,
+        'total_pages' => $totalPages,
+        'total_rows'  => $totalRows,
+        'offset'      => $offset,
+        'per_page'    => $perPage,
+        'limit_sql'   => ' LIMIT ' . (int) $perPage . ' OFFSET ' . (int) $offset,
+    ];
 }
 
 /**

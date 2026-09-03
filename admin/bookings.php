@@ -82,13 +82,10 @@ $baseSql = "FROM bookings   b
             LEFT JOIN payments pay ON pay.booking_id = b.booking_id
             $whereSql";
 
-$countStmt = $pdo->prepare("SELECT COUNT(*) $baseSql");
-$countStmt->execute($params);
-$totalRows  = (int) $countStmt->fetchColumn();
-$totalPages = (int) ceil($totalRows / RECORDS_PER_PAGE);
-$page       = max(1, get_int('page', 1));
-$page       = $totalPages > 0 ? min($page, $totalPages) : 1;
-$offset     = ($page - 1) * RECORDS_PER_PAGE;
+$window     = page_window($pdo, "SELECT COUNT(*) $baseSql", $params);
+$page       = $window['page'];
+$totalPages = $window['total_pages'];
+$totalRows  = $window['total_rows'];
 
 $stmt = $pdo->prepare(
     "SELECT b.*, cu.full_name AS customer_name, cu.phone AS customer_phone,
@@ -96,7 +93,7 @@ $stmt = $pdo->prepare(
             pay.invoice_no, pay.payment_status
      $baseSql
      ORDER BY b.booking_date DESC, b.booking_time DESC
-     LIMIT " . (int) RECORDS_PER_PAGE . " OFFSET " . (int) $offset
+     " . $window['limit_sql']
 );
 $stmt->execute($params);
 $bookings = $stmt->fetchAll();

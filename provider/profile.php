@@ -184,12 +184,7 @@ $pageLede    = 'This is what customers see before they decide to book you.';
 include __DIR__ . '/../includes/header.php';
 ?>
 
-<?php if (isset($errors['form'])): ?>
-    <div class="alert alert--error" role="alert">
-        <span class="alert__icon">&#10006;</span>
-        <span class="alert__text"><?= e($errors['form']) ?></span>
-    </div>
-<?php endif; ?>
+<?= form_error($errors) ?>
 
 <div class="grid grid--2 grid--rail">
 

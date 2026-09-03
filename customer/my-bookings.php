@@ -148,13 +148,10 @@ if ($filter !== 'all') {
 }
 $whereSql = 'WHERE ' . implode(' AND ', $where);
 
-$page       = max(1, get_int('page', 1));
-$countStmt  = $pdo->prepare("SELECT COUNT(*) FROM bookings b $whereSql");
-$countStmt->execute($params);
-$totalRows  = (int) $countStmt->fetchColumn();
-$totalPages = (int) ceil($totalRows / RECORDS_PER_PAGE);
-$page       = $totalPages > 0 ? min($page, $totalPages) : 1;
-$offset     = ($page - 1) * RECORDS_PER_PAGE;
+$window     = page_window($pdo, "SELECT COUNT(*) FROM bookings b $whereSql", $params);
+$page       = $window['page'];
+$totalPages = $window['total_pages'];
+$totalRows  = $window['total_rows'];
 
 $sql = "SELECT b.*, u.full_name AS provider_name, u.phone AS provider_phone,
                c.category_name, s.service_name,
@@ -169,7 +166,7 @@ $sql = "SELECT b.*, u.full_name AS provider_name, u.phone AS provider_phone,
           LEFT JOIN feedback f   ON f.booking_id   = b.booking_id
           $whereSql
          ORDER BY b.booking_date DESC, b.booking_time DESC
-         LIMIT " . (int) RECORDS_PER_PAGE . " OFFSET " . (int) $offset;
+         " . $window['limit_sql'];
 
 $stmt = $pdo->prepare($sql);
 $stmt->execute($params);

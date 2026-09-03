@@ -103,12 +103,7 @@ $pageTitle = 'Sign in';
 
             <?= render_flashes() ?>
 
-            <?php if (isset($errors['form'])): ?>
-                <div class="alert alert--error" role="alert">
-                    <span class="alert__icon">&#10006;</span>
-                    <span class="alert__text"><?= e($errors['form']) ?></span>
-                </div>
-            <?php endif; ?>
+            <?= form_error($errors) ?>
 
             <form method="post" action="login.php" data-validate-form novalidate>
                 <?= csrf_field() ?>

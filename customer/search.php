@@ -31,7 +31,6 @@ $minRating  = get('rating');
 $maxRate    = get('max_rate');
 $keyword    = get('q');
 $sortKey    = get('sort', 'rating');
-$page       = max(1, get_int('page', 1));
 
 /* -- Build the WHERE clause ------------------------------------------ */
 $where  = ["verification_status = 'verified'", "account_status = 'active'"];
@@ -79,20 +78,15 @@ if (!isset($sorts[$sortKey])) {
 $orderSql = $sorts[$sortKey][0];
 
 /* -- Count, then fetch one page -------------------------------------- */
-$countStmt = $pdo->prepare("SELECT COUNT(*) FROM vw_provider_directory $whereSql");
-$countStmt->execute($params);
-$totalRows  = (int) $countStmt->fetchColumn();
-$totalPages = (int) ceil($totalRows / RECORDS_PER_PAGE);
-$page       = $totalPages > 0 ? min($page, $totalPages) : 1;
-$offset     = ($page - 1) * RECORDS_PER_PAGE;
+$window     = page_window($pdo, "SELECT COUNT(*) FROM vw_provider_directory $whereSql", $params);
+$page       = $window['page'];
+$totalPages = $window['total_pages'];
+$totalRows  = $window['total_rows'];
 
-// LIMIT and OFFSET are cast to int and interpolated because MySQL will
-// not accept them as bound parameters in prepared statements. They come
-// from get_int(), so they can only ever be integers.
 $sql = "SELECT * FROM vw_provider_directory
         $whereSql
         ORDER BY $orderSql
-        LIMIT " . (int) RECORDS_PER_PAGE . " OFFSET " . (int) $offset;
+        " . $window['limit_sql'];
 
 $stmt = $pdo->prepare($sql);
 $stmt->execute($params);

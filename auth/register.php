@@ -170,12 +170,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <h1>Get started</h1>
             <p class="auth__lede">Takes about a minute. Fields marked <span class="req">*</span> are required.</p>
 
-            <?php if (isset($errors['form'])): ?>
-                <div class="alert alert--error" role="alert">
-                    <span class="alert__icon">&#10006;</span>
-                    <span class="alert__text"><?= e($errors['form']) ?></span>
-                </div>
-            <?php endif; ?>
+            <?= form_error($errors) ?>
 
             <form method="post" action="register.php" data-validate-form novalidate>
                 <?= csrf_field() ?>
