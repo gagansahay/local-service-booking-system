@@ -63,7 +63,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Mark everything read the moment the panel is opened.
             if (willOpen) {
-                fetch(window.LSBMS_BASE + 'ajax/notifications.php?action=mark_read')
+                fetch(window.LSBMS_BASE + 'ajax/notifications.php?action=mark_read', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: 'csrf_token=' + encodeURIComponent(window.LSBMS_CSRF || ''),
+                })
                     .then(function () {
                         const dot = bellButton.querySelector('.bell__dot');
                         if (dot) dot.remove();

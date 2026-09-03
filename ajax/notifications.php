@@ -28,6 +28,13 @@ $action = get('action', 'list');
 switch ($action) {
 
     case 'mark_read':
+        // This is the only action here that changes anything, so it is
+        // the only one that must be a POST carrying the session token.
+        // A GET would let another site fire it with a bare <img> tag.
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !csrf_verify($_POST['csrf_token'] ?? null)) {
+            json_response(['ok' => false, 'message' => 'This request was refused.'], 403);
+        }
+
         $stmt = $pdo->prepare(
             'UPDATE notifications SET is_read = 1 WHERE user_id = :uid AND is_read = 0'
         );
